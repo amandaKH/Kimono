@@ -1,10 +1,421 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> </title>
-    </head>
-    <body>
-        <h1>hi</h1>
+   <head>
+     <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+     <script src="https://use.fontawesome.com/d484aa907d.js"></script>
+     <link rel="stylesheet" href="kh.css">
+     <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
+     <script>
 
-    </body>
+      var data = {
+        "current-price" : 43.00,
+        "revenue-ltm" : 8889,
+        "gross-margin-pct" : 0.67,
+        "opex-margin-pct" : 0.2,
+        "debt" : 1000,
+        "shares-outstanding" : 479.5,
+        "terminal-fcf" : 0.05,
+        "discount-rate" : 0.12,
+        "five-revenue-pct" : 0.05,
+        "five-opex-margin-pct" : 0.03,
+        "five-gross-margin-pct" : 0.01
+      };
+      var derived = {};
+
+
+      function fmtPrice(p) { return "$" + p.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}
+      function fmtPct(p)   { return (p * 100).toFixed(1) + "%" }
+      function fmtDeci(p) { return p.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') }
+      function fmtPdeci(p) { return "$" + p.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}
+
+
+      function redisplay() {
+
+        $( ".current-price" ).text(fmtPdeci(data["current-price"]))
+        $( ".revenue-ltm" ).text(fmtPrice(data["revenue-ltm"]))
+        $( ".gross-margin-pct" ).text(fmtPct(data["gross-margin-pct"]))
+        $( ".opex-margin-pct" ).text(fmtPct(data["opex-margin-pct"]))
+
+        $( ".gross-margin-ltm" ).text(fmtPrice(derived["gross-margin-ltm"]))
+        $( ".opex-margin-ltm" ).text(fmtPrice(derived["opex-margin-ltm"]))
+        $( ".fcf-ltm" ).text(fmtPrice(derived["fcf-ltm"]))
+        $( ".fcf-margin-pct" ).text(fmtPct(derived["fcf-margin-pct"]))
+
+        $( ".five-revenue-pct" ).text(fmtPct(data["five-revenue-pct"]))
+        $( ".five-gross-margin-pct" ).text(fmtPct(data["five-gross-margin-pct"]))
+        $( ".five-opex-margin-pct" ).text(fmtPct(data["five-opex-margin-pct"]))
+
+      	$( ".five-revenue-amt" ).text(fmtPrice(derived["five-revenue-amt"]))
+        $( ".five-gross-margin-amt" ).text(fmtPrice(derived["five-gross-margin-amt"]))
+        $( ".five-opex-margin-amt" ).text(fmtPrice(derived["five-opex-margin-amt"]))
+        $( ".five-fcf-amt" ).text(fmtPrice(derived["five-fcf-amt"]))
+        $( ".five-fcf-margin-pct" ).text(fmtPct(derived["five-fcf-margin-pct"]))
+        $( ".debt" ).text(fmtPrice(data["debt"]))
+        $( ".shares-outstanding" ).text(fmtDeci(data["shares-outstanding"]))
+        $( ".terminal-fcf" ).text(fmtPct(data["terminal-fcf"]))
+        $( ".discount-rate" ).text(fmtPct(data["discount-rate"]))
+
+
+      	$( ".rev-amt-five" ).text(fmtPrice(derived["rev-amt-five"]))
+      	$( ".gross-pct-five" ).text(fmtPct(derived["gross-pct-five"]))
+      	$( ".gross-amt-five" ).text(fmtPrice(derived["gross-amt-five"]))
+      	$( ".opex-pct-five" ).text(fmtPct(derived["opex-pct-five"]))
+      	$( ".opex-amt-five" ).text(fmtPrice(derived["opex-amt-five"]))
+      	$( ".fcf-amt-five" ).text(fmtPrice(derived["fcf-amt-five"]))
+      	$( ".fcf-pct-five" ).text(fmtPct(derived["fcf-pct-five"]))
+        $( ".fcf-amt-terminal" ).text(fmtPrice(derived["fcf-amt-terminal"]))
+        $( ".intrinsic-price" ).text(fmtPdeci(derived["intrinsic-price"]))
+        $( ".percent-undervalued" ).text(fmtPct(derived["percent-undervalued"]))
+      }
+
+      function recalc() {
+        // First stratum
+        derived["gross-margin-ltm"] = data["revenue-ltm"] * data["gross-margin-pct"]
+        derived["opex-margin-ltm"] = data["revenue-ltm"] * data["opex-margin-pct"]
+        derived["fcf-ltm"] = derived["gross-margin-ltm"] - derived["opex-margin-ltm"]
+
+        // Second stratum
+        derived["fcf-margin-pct"] = derived["fcf-ltm"] / data["revenue-ltm"]
+
+      	// Third stratum
+       	derived["five-revenue-amt"] = data["revenue-ltm"] * (1+data["five-revenue-pct"]) * (1+data["five-revenue-pct"]) * (1+data["five-revenue-pct"]) * (1+data["five-revenue-pct"]) * (1+data["five-revenue-pct"])
+       	derived["five-gross-margin-amt"] = derived["five-revenue-amt"] * (data["gross-margin-pct"]+data["five-gross-margin-pct"])
+        derived["five-opex-margin-amt"] = derived["five-revenue-amt"] * (data["opex-margin-pct"]+data["five-opex-margin-pct"])
+        derived["five-fcf-amt"] = derived["five-gross-margin-amt"] - derived["five-opex-margin-amt"]
+
+      	// Fourth stratum
+      	derived["five-fcf-margin-pct"] = derived["five-fcf-amt"] / derived["five-revenue-amt"]
+
+	// Fifth stratum
+	derived["rev-amt-one"] = data["revenue-ltm"] * (1+data["five-revenue-pct"])
+	derived["rev-amt-two"] = (derived["rev-amt-one"] * (1+data["five-revenue-pct"]))
+	derived["rev-amt-three"] = derived["rev-amt-two"] * (1+data["five-revenue-pct"])
+	derived["rev-amt-four"] = derived["rev-amt-three"] * (1+data["five-revenue-pct"])
+	derived["rev-amt-five"] = derived["rev-amt-four"] * (1+data["five-revenue-pct"])
+	derived["gross-pct-one"] = data["gross-margin-pct"] + data["five-gross-margin-pct"]
+	derived["gross-pct-two"] = data["gross-margin-pct"] + data["five-gross-margin-pct"]*2
+	derived["gross-pct-three"] = data["gross-margin-pct"] + data["five-gross-margin-pct"]*3
+	derived["gross-pct-four"] = data["gross-margin-pct"] + data["five-gross-margin-pct"]*4
+	derived["gross-pct-five"] = data["gross-margin-pct"] + data["five-gross-margin-pct"]*5
+	derived["gross-amt-one"] = derived["gross-pct-one"] * derived["rev-amt-one"]
+	derived["gross-amt-two"] = derived["gross-pct-two"] * derived["rev-amt-two"]
+	derived["gross-amt-three"] = derived["gross-pct-three"] * derived["rev-amt-three"]
+	derived["gross-amt-four"] = derived["gross-pct-four"] * derived["rev-amt-four"]
+	derived["gross-amt-five"] = derived["gross-pct-five"] * derived["rev-amt-five"]
+	derived["opex-amt-one"] = derived["opex-margin-ltm"] * (1+data["five-opex-margin-pct"])
+	derived["opex-amt-two"] = derived["opex-amt-one"] * (1+data["five-opex-margin-pct"])
+	derived["opex-amt-three"] = derived["opex-amt-two"] * (1+data["five-opex-margin-pct"])
+	derived["opex-amt-four"] = derived["opex-amt-three"] * (1+data["five-opex-margin-pct"])
+	derived["opex-amt-five"] = derived["opex-amt-four"] * (1+data["five-opex-margin-pct"])
+
+
+
+	derived["fcf-amt-one"] = derived["gross-amt-one"]-derived["opex-amt-one"]
+	derived["fcf-amt-two"] = derived["gross-amt-two"]-derived["opex-amt-two"]
+	derived["fcf-amt-three"] = derived["gross-amt-three"]-derived["opex-amt-three"]
+	derived["fcf-amt-four"] = derived["gross-amt-four"]-derived["opex-amt-four"]
+	derived["fcf-amt-five"] = derived["gross-amt-five"]-derived["opex-amt-five"]
+	derived["fcf-pct-one"] = derived ["fcf-amt-one"]/derived ["rev-amt-one"]
+	derived["fcf-pct-two"] = derived ["fcf-amt-two"]/derived ["rev-amt-two"]
+	derived["fcf-pct-three"] = derived ["fcf-amt-three"]/derived ["rev-amt-three"]
+	derived["fcf-pct-four"] = derived ["fcf-amt-four"]/derived ["rev-amt-four"]
+	derived["fcf-pct-five"] = derived ["fcf-amt-five"]/derived ["rev-amt-five"]
+	derived["fcf-amt-terminal"] = (derived["fcf-amt-five"]*(1+data["terminal-fcf"]))/(data["discount-rate"]-data["terminal-fcf"])
+
+	derived["intrinsic-price"] = (((derived["fcf-amt-one"]/(1+data["discount-rate"]))
+	+(derived["fcf-amt-two"]/((1+data["discount-rate"])*(1+data["discount-rate"])))
+	+ (derived["fcf-amt-three"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))
+	+(derived["fcf-amt-four"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))
+	+derived["fcf-amt-five"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"]))
+	+derived["fcf-amt-terminal"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))-data["debt"])/data["shares-outstanding"]
+
+
+	derived["percent-undervalued"] = (derived["intrinsic-price"]/data["current-price"])-1;
+
+        redisplay();
+        console.log("redisplay");
+      }
+
+      $( document ).ready(function() {
+        console.log("ready");
+        recalc();
+
+         $( "#five-revenue-pct-down" ).click(function(e) {
+          data["five-revenue-pct"] -= 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#five-revenue-pct-up" ).click(function(e) {
+          data["five-revenue-pct"] += 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+          $( "#five-gross-margin-pct-down" ).click(function(e) {
+          data["five-gross-margin-pct"] -= 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#five-gross-margin-pct-up" ).click(function(e) {
+          data["five-gross-margin-pct"] += 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+         $( "#five-opex-margin-pct-down" ).click(function(e) {
+          data["five-opex-margin-pct"] -= 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#five-opex-margin-pct-up" ).click(function(e) {
+          data["five-opex-margin-pct"] += 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#terminal-fcf-up" ).click(function(e) {
+          data["terminal-fcf"] += 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#terminal-fcf-down" ).click(function(e) {
+          data["terminal-fcf"] -= 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#discount-rate-up" ).click(function(e) {
+          data["discount-rate"] += 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+        $( "#discount-rate-down" ).click(function(e) {
+          data["discount-rate"] -= 0.01;
+          recalc();
+          e.preventDefault();
+        });
+
+      });
+     </script>
+   </head>
+   <body>
+    <div id="container">
+      <div id="header">
+          <img id="logo" src="http://fullhdpictures.com/wp-content/uploads/2016/06/Luxottica-Logo.jpg" alt="Luxxotica">
+          <h2>Luxxotica NYSE:LUX</h2>
+      </div>
+      <div id="sidebarl">
+        <div id="business">
+          <h1>Business</h1>
+                <ul>
+                    <li>Optical (1/3) and Sun (2/3)</li>
+                    <li>Premium European and North American</li>
+                    <li>Pays 5-15% of sales as royalties to premium brands, as well as covering promotions, manufacturing and design
+10% of the overall global market share (X% of premium)</li>
+                    <li>Global growth at ~6%</li>
+                </ul>
+        </div>
+        <div id="growth">
+            <h1>Growth Drivers</h1>
+                <ul>
+                    <li>Growing in-house brands</li>
+                    <li>Licensing luxury brands</li>
+                    <li>Increasing vertical integration</li>
+                    <li>Expanding footprint</li>
+                </ul>
+        </div>
+
+        <div id="profitability">
+            <h1>Profitability Drivers</h1>
+                <ul>
+                    <li>US, where more profitable wholesale business is strongest, is suffering</li>
+                    <li>GM highly sensitive to growth (fell 1% with sales decline)</li>
+                    <li>Move production to lower cost countries</li>
+                </ul>
+        </div>
+      </div>
+      <div id="content">
+          <div id = "summary">
+              <h1>Overall Summary</h1>
+              <div class = "summarybox">
+                  <ul>
+                      <li>Amazing moat, deep integration and wide distribution network likely to protect the company for several years</li>
+                      <li>Changing retail landscape will cause growth levels likely to decline, may lead to multiple correction in the next 6 - 12 months</li>
+                      <li>Succession issues likely to cause distraction over next 2-3 years</li>
+                  </ul>
+              </div>
+          </div>
+          <div id = "description">
+              <h1>Company Description</h1>
+              <div class = "descriptiontext">Luxottica manufactures and retails prescription and nonprescription fashion eyewear. Its owned brands include Ray-Ban, Oakley, Oliver Peoples, Persol, Alain Mikli and Arnette. It also manufactures eyewear under license from global brands such as Chanel, Prada & Miu Miu, Dolce & Gabbana, Bvlgari, Tiffany & Co., Versace, Burberry, Ralph Lauren, DKNY, Paul Smith, Brooks Brothers, Tory Burch, Coach, Armani, Michael Kors and Starck Eyes. The Manufacturing & Wholesale division contributed €3.6 billion (41%) of consolidated revenue and €807mm (43%) of consolidated operating income, after elimination of intercompany sales, in 2015.
+                <p>In the U.S the company operates retail stores such as LensCrafters, Sunglass Hut, and Pearle Vision, as well as shop-in-shops in Sears (Sears Optical), Target (Target Optical), and Macy’s (LensCrafters). Retail distribution contributed 59% of consolidated revenue and 57% of consolidated operating income, after elimination of intercompany sales, in 2015. The company also provides vision care insurance in the United States through EyeMed.</p>
+              </div>
+          </div>
+          <div id = "industry">
+              <h1>Industry</h1>
+              <div class = "sections">
+                <div class = "headwinds">
+                  <img class="arrow" src="images/sellarrow.png" alt=" ">
+                  <ul>
+                      <li><div class = "bold-title">Lower traffic in retail: </div> Foot traffic is down and declining: tourism, foot traffic (esp in malls where new Macy store-in-stores are planned) are way down (especially in accessories).</li>
+                      <li><div class = "bold-title">Competition from 'suppliers': </div> a lot of brands are starting to take their sunglass sales in-house, likely a result of building stronger online presences and being less dependent on LUX's distribution. especially true for sunglasses, where LUX has chosen to focus.
+                        <ul>
+                            <li>Kering (Gucci, Balenciaga, Stella McCartney, Saint Laurent, Brioni, and Alexander McQueen) has recently taken their business in-house due to 'brand dilution' and LUX's focus on their own brands or established brands like Chanel over up and coming brands.</li>
+                            <li>Chanel, Elie Saab, Swatch, Omega now selling glasses on their own website in addition to the LUX platform</li>
+                            <li>While it will be difficult for many existing brands to lose the sales from LUX's distribution network, as well as invest in their own design and manufacturing capabilities, newer brands may increasingly opt for this as a way of strengthening profits and online customer relationships.</li>
+                        </ul>
+                      </li>
+                      <li><div class = "bold-title">Competition from online: </div> Warby Parker making increasing inroads ($300M retail) although at lower end of the market. Given the very high margins in glasses, can we expect prices across the board to come down over time as a result? sales to online retailers were down 50% in 1H16, with sales to Amazon down 90% as a result of trying to maintain minimum pricing.</li>
+                      <li><div class = "bold-title">Sunglass market increasingly competitive: </div> 'very promotional retail environment'</li>
+                  </ul>
+                </div>
+                <div class = "tailwinds">
+                  <img class="arrow" src="images/buyarrow.png" alt=" ">
+                  <ul>
+                      <li><div class = "bold-title">Increased sunglasses penetration: </div> China & Emerging markets to go from 20% current penetration to 60% as in the US. This will likely take some time, as the trend is typically to go to 'fake' first.</li>
+                  </ul>
+                </div>
+          </div>
+          </div>
+          <div id = "company">
+              <h1>Company</h1>
+              <div class = "sections">
+                <div class = "headwinds">
+                  <img class="arrow" src="images/sellarrow.png" alt=" ">
+                  <ul>
+                      <li><div class = "bold-title">Flagship brands Rayban and Oakley are faltering: </div> RayBan (30% of sales) now oversupplied (now at Amazon and Costco), LUX has tried forcing a minimum price on its suppliers but it is not working (Costco selling way below the minimum price due to purchase of third party inventory). </li>
+                      <li><div class = "bold-title">Doubling down on a declining distribution network: </div> planning to open 900+ stores and refurbish 300. Stores require heavy promotional budgets and inventory, as compared to online or specialized independent eye care professionals. </li>
+                      <li><div class = "bold-title">Management/ownership shifts: </div> 61% of company held by 80+ founder, had to come back to run business, soon shares will be distributed to his 6 children (from 3 wives) with additional 25% to current wife. Wants to keep kids far away from operations. CEO & CFO of 10 years left in 2014. </li>
+                      <li><div class = "bold-title">Reduced transparency: </div> recently reduced reporting from quarterly to bi-annually.</li>
+                  </ul>
+                </div>
+                <div class = "tailwinds">
+                  <img class="arrow" src="images/buyarrow.png" alt=" ">
+                  <ul>
+                      <li><div class = "bold-title">Store-in-Store: </div> growing presence in Target, Macy, and Sears likely to provide higher operating margins in retail segment. </li>
+                      <li><div class = "bold-title">Wearables: </div> deal with Google may provide interesting upside. </li>
+                      <li><div class = "bold-title">Insane distribution: </div> their scale benefits are enormous and they've created a nice stream of no-hassle profits for the partners they license brands from. Unlikely to lose this moat anytime soon. </li>
+
+                  </ul>
+                </div>
+              </div>
+          </div>
+          <div id = "valuation">
+              <h1>Valuation</h1>
+              <div class = "sections">
+                <div class = "headwinds">
+                  <img class="arrow" src="images/sellarrow.png" alt=" ">
+                  <ul>
+                      <li><div class = "bold-title">Growth premium no longer justified: </div> Quite rich in general, likely too expensive when lower growth is factored in and competitive changes in the landscape start to show more.</li>
+                      <li><div class = "bold-title">Retail footprint losing importance: </div> how much of their 10x multiple is due to the retail footprint, which is quickly losing importance</li>
+                      <li><div class = "bold-title">Weak cash return: </div> Low dividend, weak ROIC historically</li>
+                  </ul>
+                </div>
+                <div class = "tailwinds">
+                  <img class="arrow" src="images/buyarrow.png" alt=" ">
+                  <ul>
+                      <li><div class = "bold-title">Potential buyback on horizon: </div> bought back 1% of shares in 2016, got authorized for another 2%</li>
+                  </ul>
+                </div>
+              </div>
+          </div>
+      </div>
+      <div id="sidebarr">
+        <div id="metrics">
+            <h1>Key Metrics</h1>
+            <div id = "metriclist">
+              <li class="metric">Revenues: <div class="number">8.8bn</div></li>
+              <li class="metric">EBITDA: <div class="number">1.9bn</div></li>
+              <li class="metric">EV / EBITDA: <div class="number">11.4x</div></li>
+              <li class="metric">EV / EBITA: <div class="number">13.9</div></li>
+              <li class="metric">EBITDA margin: <div class="number">18.3%</div></li>
+
+            </div>
+        </div>
+
+        <div id="dcf">
+            <h1>Quick DCF</h1>
+            <div id = "dcfcalc">
+                <div id="intrinsic">
+                  <div class="intrin">Current Price: <div class="number"><span class="current-price"></div></div>
+                  <div class="intrin">Intrinsic Price: <div class="number2"><span class="intrinsic-price"></span></div></div>
+                  <div id="intrinnormal">% undervalued: <div class="number"><span class="percent-undervalued"></span></div></div>
+                </div>
+              <h4>ASSUMPTIONS</h4>
+              <table>
+                <tr>
+                  <th></th>
+                  <th>CAGR</th>
+                  <th>LTM</th>
+                  <th>YR 5</th>
+                </tr>
+                <tr class="blue">
+                  <td>Revenue</td>
+                  <td><i id="five-revenue-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-revenue-pct"></span><i id="five-revenue-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
+                  <td><span class="revenue-ltm"></span></td>
+                  <td><span class="rev-amt-five"></span></td>
+                </tr>
+                <tr>
+                  <td>Gross Margin</td>
+                  <td></td>
+                  <td><span class="gross-margin-ltm"></span></td>
+                  <td><span class="gross-amt-five"></span></td>
+                </tr>
+                <tr class="italic blue">
+                  <td>Margin %</td>
+                  <td><i id="five-gross-margin-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-gross-margin-pct"></span><i id="five-gross-margin-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
+                  <td><span class="gross-margin-pct"</span></td>
+                  <td><span class="gross-pct-five"></span></td>
+                </tr>
+                <tr>
+                  <td>Expenses</td>
+                  <td><i id="five-opex-margin-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-opex-margin-pct"></span><i id="five-opex-margin-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
+                  <td><span class="opex-margin-ltm"></span></td>
+                  <td><span class="opex-amt-five"></span></td>
+                </tr>
+                <tr class="blue">
+                  <td>FCF</td>
+                  <td></td>
+                  <td><span class="fcf-ltm"></span></td>
+                  <td><span class="fcf-amt-five"></span></td>
+                </tr>
+                 <tr class="italic blue">
+                  <td>FCF margin</td>
+                  <td></td>
+                  <td><span class="fcf-margin-pct"></span></td>
+                  <td><span class="fcf-pct-five"></span></td>
+                </tr>
+              </table>
+              <li class="metric">Terminal Growth: <div class="number"><i id="terminal-fcf-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="terminal-fcf"></span><i id="terminal-fcf-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></div></li>
+              <li class="metric">Discount Rate: <div class="number"><i id="discount-rate-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="discount-rate"></span><i id="discount-rate-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></div></li>
+              <li class="metric">Shares o/s (mm): <div class="number"><span class="shares-outstanding"></span></div></li>
+              <li class="metric">Net Debt (mm): <div class="number"><span class="debt"></span></div></li>
+            </div>
+        </div>
+        <div id="todos">
+            <h1>Additional Work to do</h1>
+            <div id = "todos">
+                <ul>
+                    <li>Survey to ascertain demographic trends in optic + sun purchasing</li>
+                    <li>review licensing agreements and how they've evolved</li>
+                    <li>understand online sunglass purchasing trend</li>
+                    <li>Eliminating the effect of foreign exchange (which has benefitted LUX recently), what is happening to the underlying business, wholesale and retail</li>
+                    <li>Interview key brands with upcoming license expirations to assess risk of loss</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="comps"></div>
+          <h1>Comps</h1>
+        <div id="links"></div>
+          <h1>Reviews</h1>
+      </div>
+      <div id="footer"></div>
+    </div>
+   </body>
 </html>
