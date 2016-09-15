@@ -42,9 +42,9 @@ html, body, div { margin: 0; padding: 0; border: 0 none; }
 h1{
     color: MidnightBlue;
     font-weight: bolder;
-    font-size: 1.0em;
+    font-size: 1.1em;
     background-color: rgba(176,196,222,0.5);
-    padding: 1px 5px;
+    padding: 2px 5px;
     border-bottom-color: MidnightBlue;
     border-bottom: dotted;
     border-bottom-width: thin;
@@ -226,4 +226,26 @@ ul {
    padding: 0;
    margin: 0;
    
+}
+
+.fa-plus-circle{
+    float: right;
+    color: 	#a5bcd9;
+    vertical-align: bottom;
+}
+
+.fa-plus-circle:hover{
+    color: 	MidnightBlue;
+}
+
+.fa-plus-circle:active{
+    color: 	#C71585;
+}
+
+.close{
+    float: right;
+}
+
+.modal-content{
+    hidden: true;
 }
