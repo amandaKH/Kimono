@@ -5,28 +5,114 @@
      <script src="https://use.fontawesome.com/d484aa907d.js"></script>
      <link rel="stylesheet" href="kh.css">
      <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
+     <script src="https://d3js.org/d3.v2.min.js"></script>
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+     <script type="text/javascript">
+    // Array of containing objects; "id" field is question ID,
+    // "profile_question" is question text.
+    var questions = [];
+    var fetchedQuestions = false;
+    var fetchedCompanies = false;
+ 
+	function renderChart() {	
+        var cdata = [
+	  {"Name": "GROWTH",
+	   "Average Rating": 6},
+	  {"Name": "INDUSTRY",
+	    "Average Rating": 7},
+	    {"Name": "MANAGEMENT",
+	    "Average Rating": 3},
+	    {"Name": "OPERATIONS",
+	    "Average Rating": 7},
+	    {"Name": "FINANCIAL",
+	    "Average Rating": 9},
+	    {"Name": "MOAT",
+	    "Average Rating": 8},
+	    {"Name": "OTHER",
+	    "Average Rating": 7},
+	];
+	var valueLabelWidth = 1; // space reserved for value labels (right)
+	var barHeight = 25; // height of one bar
+	var barLabelWidth = 95; // space reserved for bar labels
+	var barLabelPadding = 3; // padding between bar and bar labels (left)
+	var gridLabelHeight = 1; // space reserved for gridline labels
+	var gridChartOffset = 0.2; // space between start of grid and first bar
+	var maxBarWidth = 130; // width of the bar with the max value
+	 
+	// accessor functions 
+	var barLabel = function(d) { return d['Name']; };
+	var barValue = function(d) { return parseFloat(d['Average Rating']); };
+	 
+	// scales
+	var yScale = d3.scale.ordinal().domain(d3.range(0, cdata.length)).rangeBands([0, cdata.length * barHeight]);
+	var y = function(d, i) { return yScale(i); };
+	var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
+	var x = d3.scale.linear().domain([0, 10]).range([0, maxBarWidth]);
+	
+	// svg container element
+	var chart = d3.select('#chart').append("svg")
+	  .attr('width', maxBarWidth + barLabelWidth + valueLabelWidth)
+	  .attr('height', gridLabelHeight + gridChartOffset + cdata.length * barHeight);
+	
+
+	// bars
+	var barsContainer = chart.append('g')
+	  .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+	barsContainer.selectAll("rect").data(cdata).enter().append("rect")
+	  .attr('y', y)
+	  .attr('height', yScale.rangeBand()*0.7)
+	  .attr('width', function(d) { return x(barValue(d)); })
+	  .attr('stroke', 'white')
+	  .attr('opacity', .6)
+	  .attr("rx", 5)         // set the x corner curve radius
+      .attr("ry", 5)        // set the y corner curve radius
+	  .attr('fill', function(d) { return (barValue(d) < 2 ? "RGB(250, 60, 72)" : barValue(d) < 4 ? "RGB(251, 72, 87)" : barValue(d) 		< 5 ? "RGB(253, 115, 112)" : barValue(d) < 7 ? "RGB(254, 213, 189)" : barValue(d) < 8 ? "RGB(219, 238, 208)" : barValue(d) < 9 ? "RGB(154, 202, 124)" : "RGB(84, 130, 53)"); });
+	
+		// bar labels
+	var labelsContainer = chart.append('g')
+	  .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+	labelsContainer.selectAll('text').data(cdata).enter().append('text')
+	  .attr('y', yText)
+	  .attr('stroke', 'none')
+	  .attr('fill', "RGB(128,128,128)")
+	  .attr("dy", ".15em") // vertical-align: middle
+	  .attr('text-anchor', 'end')
+	  .attr("font-size","12px")
+	  .text(barLabel);
+	    
+	    
+	}
+	
+	
+	
+     </script>
      <script>
+     
+     
+    
 
       var data = {
         "current-price" : 43.00,
         "revenue-ltm" : 8889,
         "gross-margin-pct" : 0.67,
-        "opex-margin-pct" : 0.2,
+        "opex-margin-pct" : 0.46,
         "debt" : 1000,
         "shares-outstanding" : 479.5,
-        "terminal-fcf" : 0.05,
+        "terminal-fcf" : 0.03,
         "discount-rate" : 0.12,
-        "five-revenue-pct" : 0.05,
+        "five-revenue-pct" : 0.03,
         "five-opex-margin-pct" : 0.03,
-        "five-gross-margin-pct" : 0.01
+        "five-gross-margin-pct" : -0.000
       };
+      
       var derived = {};
 
 
-      function fmtPrice(p) { return "$" + p.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}
+      function fmtPrice(p) { return "$" + p.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       function fmtPct(p)   { return (p * 100).toFixed(1) + "%" }
-      function fmtDeci(p) { return p.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') }
-      function fmtPdeci(p) { return "$" + p.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}
+      function fmtDeci(p) { return p.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }
+      function fmtPdeci(p) { return "$" + p.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+
 
 
       function redisplay() {
@@ -127,16 +213,22 @@
 	+ (derived["fcf-amt-three"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))
 	+(derived["fcf-amt-four"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))
 	+derived["fcf-amt-five"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"]))
-	+derived["fcf-amt-terminal"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))-data["debt"])/data["shares-outstanding"]
+	+derived["fcf-amt-terminal"]/((1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])*(1+data["discount-rate"])))-data["debt"])/data["shares-outstanding"]
 
 
 	derived["percent-undervalued"] = (derived["intrinsic-price"]/data["current-price"])-1;
 
         redisplay();
-        console.log("redisplay");
+        console.log(derived ["fcf-amt-five"]);
+        console.log(derived ["fcf-amt-four"]);
+        console.log(derived ["fcf-amt-three"]);
+        console.log(derived ["fcf-amt-two"]);
+        console.log(derived ["fcf-amt-one"]);
+        
       }
 
       $( document ).ready(function() {
+        renderChart();
         console.log("ready");
         recalc();
 
@@ -153,13 +245,13 @@
         });
 
           $( "#five-gross-margin-pct-down" ).click(function(e) {
-          data["five-gross-margin-pct"] -= 0.01;
+          data["five-gross-margin-pct"] -= 0.002;
           recalc();
           e.preventDefault();
         });
 
         $( "#five-gross-margin-pct-up" ).click(function(e) {
-          data["five-gross-margin-pct"] += 0.01;
+          data["five-gross-margin-pct"] += 0.002;
           recalc();
           e.preventDefault();
         });
@@ -201,7 +293,11 @@
         });
 
       });
+
+          
      </script>
+
+
    </head>
    <body>
     <div id="container">
@@ -210,14 +306,21 @@
           <h2>Luxxotica NYSE:LUX</h2>
       </div>
       <div id="sidebarl">
+        <div id="bprofile">
+          <h1>Business Profile</h1>
+          <div id="chart"></div>
+
+        </div>
+        
         <div id="business">
-          <h1>Business</h1>
+          <h1>Business overview</h1>
                 <ul>
                     <li>Optical (1/3) and Sun (2/3)</li>
                     <li>Premium European and North American</li>
-                    <li>Pays 5-15% of sales as royalties to premium brands, as well as covering promotions, manufacturing and design
-10% of the overall global market share (X% of premium)</li>
+                    <li>Pays 5-15% of sales as royalties to premium brands, as well as covering promotions, manufacturing and design</li>
+                    <li>10% of the overall global market share (X% of premium)</li>
                     <li>Global growth at ~6%</li>
+                    <li>4,000 stores across North America under the LensCrafters, Sunglass Hut and Pearle Vision</li>
                 </ul>
         </div>
         <div id="growth">
@@ -236,6 +339,14 @@
                     <li>US, where more profitable wholesale business is strongest, is suffering</li>
                     <li>GM highly sensitive to growth (fell 1% with sales decline)</li>
                     <li>Move production to lower cost countries</li>
+                </ul>
+        </div>
+        
+        <div id="ownership">
+            <h1>Notable ownership</h1>
+                <ul>
+                    <li>80+ year old founder owns 60%</li>
+                    <li>Armani owns 5%</li>
                 </ul>
         </div>
       </div>
@@ -332,7 +443,7 @@
               <li class="metric">Revenues: <div class="number">8.8bn</div></li>
               <li class="metric">EBITDA: <div class="number">1.9bn</div></li>
               <li class="metric">EV / EBITDA: <div class="number">11.4x</div></li>
-              <li class="metric">EV / EBITA: <div class="number">13.9</div></li>
+              <li class="metric">EV / EBITA: <div class="number">13.9x</div></li>
               <li class="metric">EBITDA margin: <div class="number">18.3%</div></li>
 
             </div>
@@ -355,37 +466,37 @@
                   <th>YR 5</th>
                 </tr>
                 <tr class="blue">
-                  <td>Revenue</td>
+                  <td class="left">Revenue</td>
                   <td><i id="five-revenue-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-revenue-pct"></span><i id="five-revenue-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
                   <td><span class="revenue-ltm"></span></td>
                   <td><span class="rev-amt-five"></span></td>
                 </tr>
                 <tr>
-                  <td>Gross Margin</td>
+                  <td class="left">Gross Margin</td>
                   <td></td>
                   <td><span class="gross-margin-ltm"></span></td>
                   <td><span class="gross-amt-five"></span></td>
                 </tr>
                 <tr class="italic blue">
-                  <td>Margin %</td>
+                  <td class="left">Margin %</td>
                   <td><i id="five-gross-margin-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-gross-margin-pct"></span><i id="five-gross-margin-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
                   <td><span class="gross-margin-pct"</span></td>
                   <td><span class="gross-pct-five"></span></td>
                 </tr>
                 <tr>
-                  <td>Expenses</td>
+                  <td class="left">Expenses</td>
                   <td><i id="five-opex-margin-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-opex-margin-pct"></span><i id="five-opex-margin-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
                   <td><span class="opex-margin-ltm"></span></td>
                   <td><span class="opex-amt-five"></span></td>
                 </tr>
                 <tr class="blue">
-                  <td>FCF</td>
+                  <td class="left">FCF</td>
                   <td></td>
                   <td><span class="fcf-ltm"></span></td>
                   <td><span class="fcf-amt-five"></span></td>
                 </tr>
                  <tr class="italic blue">
-                  <td>FCF margin</td>
+                  <td class="left">FCF margin</td>
                   <td></td>
                   <td><span class="fcf-margin-pct"></span></td>
                   <td><span class="fcf-pct-five"></span></td>
@@ -397,6 +508,15 @@
               <li class="metric">Net Debt (mm): <div class="number"><span class="debt"></span></div></li>
             </div>
         </div>
+
+        <div id="comps"></div>
+          <h1>Comps</h1>
+          <ul>
+              <li>Italian Safilo Group (Dior, Fendi, Jimmy Choo)</li>
+          </ul>
+        <div id="management"></div>
+          <h1>Management Quotes</h1>
+      
         <div id="todos">
             <h1>Additional Work to do</h1>
             <div id = "todos">
@@ -406,14 +526,10 @@
                     <li>understand online sunglass purchasing trend</li>
                     <li>Eliminating the effect of foreign exchange (which has benefitted LUX recently), what is happening to the underlying business, wholesale and retail</li>
                     <li>Interview key brands with upcoming license expirations to assess risk of loss</li>
+                    <li>Model sensitivities: price declines in China, decline in retail productivity, loss of major customers, upside from moving production to lower cost countries</li>
                 </ul>
             </div>
         </div>
-
-        <div id="comps"></div>
-          <h1>Comps</h1>
-        <div id="links"></div>
-          <h1>Reviews</h1>
       </div>
       <div id="footer"></div>
     </div>
