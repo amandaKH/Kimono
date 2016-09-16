@@ -370,3 +370,31 @@ label > input + i{ /* IMAGE STYLES */
 label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
   opacity: 1;
 }
+
+
+
+.donut{
+    font-size: 0.8em;
+    width: 32.4%;
+    display: inline-block;
+    text-transform: uppercase;
+    color: LightSlateGray;
+    font-weight: bold;
+    margin: auto;
+}
+
+
+
+.donut > span{   
+    border-bottom-width: 1px;
+    border-bottom-color: LightSlateGray;
+    border-bottom-style: dotted;
+    width: 100%;
+}
+
+.donut > span > .fa-arrow-up{
+    color: LightSlateGray;
+    border: none;
+    opacity: 1;
+   
+}

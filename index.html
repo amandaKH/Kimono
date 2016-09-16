@@ -15,9 +15,9 @@
  
 	function renderChart() {	
         var cdata = [
-	  {"Name": "GROWTH",
-	   "Average Rating": 6},
-	  {"Name": "INDUSTRY",
+	    {"Name": "GROWTH",
+	    "Average Rating": 6},
+	    {"Name": "INDUSTRY",
 	    "Average Rating": 7},
 	    {"Name": "MANAGEMENT",
 	    "Average Rating": 3},
@@ -81,32 +81,29 @@
 	    
 	    
 	}
-	
+
+</script>
+<script>
 	
 	function rendermChart() {	
         var mdata = [
-	  {"Name": "GROWTH",
-	   "Average Rating": 6},
-	  {"Name": "INDUSTRY",
-	    "Average Rating": 7},
-	    {"Name": "MANAGEMENT",
-	    "Average Rating": 3},
-	    {"Name": "OPERATIONS",
-	    "Average Rating": 7},
-	    {"Name": "FINANCIAL",
-	    "Average Rating": 9},
-	    {"Name": "MOAT",
-	    "Average Rating": 8},
-	    {"Name": "OTHER",
-	    "Average Rating": 7},
+	    
+	    {"Name": "Culture & Values",
+	    "Average Rating": 6.4},
+	    {"Name": "Work/Life Balance",
+	    "Average Rating": 6.1},
+	    {"Name": "Compensation",
+	    "Average Rating": 6.2},
+	    {"Name": "Career Opportunity",
+	    "Average Rating": 5.8},
 	];
 	var valueLabelWidth = 1; // space reserved for value labels (right)
 	var barHeight = 25; // height of one bar
-	var barLabelWidth = 95; // space reserved for bar labels
+	var barLabelWidth = 135; // space reserved for bar labels
 	var barLabelPadding = 3; // padding between bar and bar labels (left)
 	var gridLabelHeight = 1; // space reserved for gridline labels
 	var gridChartOffset = 0.2; // space between start of grid and first bar
-	var maxBarWidth = 130; // width of the bar with the max value
+	var maxBarWidth = 120; // width of the bar with the max value
 	 
 	// accessor functions 
 	var barLabel = function(d) { return d['Name']; };
@@ -135,7 +132,7 @@
 	  .attr('opacity', .6)
 	  .attr("rx", 5)         // set the x corner curve radius
       .attr("ry", 5)        // set the y corner curve radius
-	  .attr('fill', function(d) { return (barValue(d) < 2 ? "RGB(250, 60, 72)" : barValue(d) < 4 ? "RGB(251, 72, 87)" : barValue(d) 		< 5 ? "RGB(253, 115, 112)" : barValue(d) < 7 ? "RGB(254, 213, 189)" : barValue(d) < 8 ? "RGB(219, 238, 208)" : barValue(d) < 9 ? "RGB(154, 202, 124)" : "RGB(84, 130, 53)"); });
+	  .attr('fill', function(d) { return (barValue(d) < 4 ? "RGB(250, 60, 72)" : barValue(d) < 5 ? "RGB(251, 72, 87)" : barValue(d) 		< 6 ? "RGB(253, 115, 112)" : barValue(d) < 7 ? "RGB(254, 213, 189)" : barValue(d) < 8 ? "RGB(219, 238, 208)" : barValue(d) < 9 ? "RGB(154, 202, 124)" : "RGB(84, 130, 53)"); });
 	
 		// bar labels
 	var labelsContainer = mchart.append('g')
@@ -144,16 +141,99 @@
 	  .attr('y', yText)
 	  .attr('stroke', 'none')
 	  .attr('fill', "RGB(128,128,128)")
-	  .attr("dy", ".15em") // vertical-align: middle
+	  .attr("dy", ".15em") // vertical-align: left
 	  .attr('text-anchor', 'end')
 	  .attr("font-size","12px")
 	  .text(barLabel);
-	    
+	  
+	  // bar values
+	  	var valuesContainer = mchart.append('g')
+	  .attr('transform', 'translate(' + (valueLabelWidth) + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+	valuesContainer.selectAll('text').data(mdata).enter().append('text')
+	  .attr('y', yText)
+	  .attr('stroke', 'none')
+	  .attr('fill', "RGB(128,128,128)")
+	  .attr("dy", ".15em") // vertical-align: middle
+	  .attr("dx", barLabelWidth + maxBarWidth-30) //margin right
+	  .attr('text-anchor', 'start')
+	  .attr("font-size","12px")
+	  .text(barValue);
+	  
 	    
 	}
 	
 	
      </script>
+     
+     <script>
+
+     
+       function renderdChart(chartn, amt) {
+           var data = [
+             {"Date":"amount","Value": amt},
+             {"Date":"other","Value": 100-amt}];
+    
+            width = 150; // Changes pie size as a whole
+            height = 150; // Changes pie size as a whole
+            radius = Math.min(width-10,height-10)/2;
+    
+            var color = d3.scale.ordinal()
+              .domain(["amount", "other"])
+              .range(["LightSlateGrey", "Gainsboro"]);
+                
+            var arc = d3.svg.arc()  
+                .outerRadius(radius -50)
+                .innerRadius(radius - 43); //makes thinner donut
+        
+            var arcOver = d3.svg.arc()  
+                .outerRadius(radius +50)
+                .innerRadius(0);
+        
+            var svg = d3.select("#"+chartn).append("svg")
+                .attr("width",width/2)
+                .attr("height",height/2)
+                .append("g")
+                .attr("transform","translate("+width/4+","+height/4+")");
+        
+            var pie = d3.layout.pie()
+                  .sort(null)
+                  .value(function(d){return d.Value;});
+        
+            var g = svg.selectAll(".arc")
+                .data(pie(data))
+                .enter()
+                .append("g")
+                .attr("class","arc")
+                
+           
+            svg.selectAll("text").data(pie(data)).enter()
+                .append("text")
+                .attr("class","label1")
+                .attr("transform", function(d) {
+                   var dist=radius-70; //where the text goes
+                   var winkel=(d.startAngle+d.endAngle)/2;
+                   var x=dist*Math.sin(winkel);
+                   var y=-dist*Math.cos(winkel);
+                   
+            return "translate(" + x + "," + y + ")";
+                })
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "middle")
+                .style('fill','LightSlateGrey')
+                .style('font-family','Muli')
+                .style('font-size','1.2em')
+            
+            .text(function(d){
+                return (data[0].Value+"%");
+            
+            });
+            
+            g.append("path")
+                .attr("d",arc)
+                .style("fill",function(d){return color(d.data.Date);});
+       } 
+     </script>
+     
      <script>
      
      
@@ -297,7 +377,10 @@
 
       $( document ).ready(function() {
         renderChart();
-        // rendermChart();
+        rendermChart();
+        renderdChart("CEO", 95);
+        renderdChart("NPS", 85);
+        renderdChart("OUTL", 75);
         $('.sentiment').prop('checked', false);
 
         console.log("ready");
@@ -912,8 +995,12 @@
                 
                   </div>
                 </div>
-                
-        <div id="mchart"></div>
+        <div class = mgmtcharts>
+            <div class="donut"><span>CEO approval</span><div id = "CEO"></div></div>
+            <div class="donut"><span>Employee NPS</span><div id = "NPS"></div></div>
+            <div class="donut"><span>Outlook <i id="outlook" class="fa fa-arrow-up" aria-hidden="true"></i></span><div id = "OUTL"></div></div>
+            <div id="mchart"></div>
+        </div>
           
         <div id="views"></div>
           <h1>Notable Views<a data-toggle="modal" href="#vModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
