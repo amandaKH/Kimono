@@ -272,10 +272,26 @@ input{
 }
 
 input[type=text] {
-    width: 40%;
+    width: 85%;
 }
 
-input[type=number] {
+input[name="shareholder"] {
+    width: 65%;
+}
+
+input[name="indtitle"], input[name="cotitle"], input[name="valtitle"] {
+    width: 25%;
+}
+
+input[name="indexplanation"], input[name="coexplanation"], input[name="valexplanation"], input[name="compname"] {
+    width: 60%;
+}
+
+input[name="metricname"] {
+    width: 47%;
+}
+
+input[type=number], input[name="compticker"]  {
     width: 20%;
 }
 
