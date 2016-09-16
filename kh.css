@@ -244,8 +244,129 @@ ul {
 
 .close{
     float: right;
+    background-color: white;
+    color: MidnightBlue;
+    border: none;
+}
+
+.fa-minus-circle{
+    color: 	MidnightBlue;
+    font-size: 1.2em;
+    
+}
+
+.fa-minus-circle:hover{
+    color: 	LightSteelBlue;
+}
+
+.fa-minus-circle:active{
+    color: 	#C71585;
+}
+
+input{
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: LightGray;
+    font-family: inherit;
+}
+
+input[type=text] {
+    width: 40%;
+}
+
+input[type=number] {
+    width: 20%;
+}
+
+.fa-check{
+    color: YellowGreen;
+}
+
+.fa-check:hover{
+    background-color: SeaGreen;
+    color: white;
+}
+
+.submitdata:hover{
+    background-color: SeaGreen;
+    color: white;
+    border-color: SeaGreen;
+}
+
+.submitdata{
+    border-color:YellowGreen;
+    background-color: white;
+    border-radius: 19px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 0px 2px 1px 2px;
+    float: right;
+    
+}
+
+.modal-title{
+    text-transform: uppercase;
+    font-weight: normal;
 }
 
 .modal-content{
-    hidden: true;
+    border-top-color: LightSteelBlue;
+    border-bottom-color: LightSteelBlue;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-bottom-width: medium;
+    border-top-width: thin;
+    padding-bottom: 8px;
+    margin-bottom: 5px;
+}
+
+.fa-arrow-down{
+    border-color: FireBrick;
+    color:FireBrick;
+    background-color: white;
+    border-radius: 19px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 1px 2px 1px 2px;
+    display: inline-block;
+    opacity: 0.2;
+    
+}
+
+.fa-arrow-up{
+    border-color:SeaGreen;
+    color:SeaGreen;
+    background-color: white;
+    border-radius: 19px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 1px 2px 1px 2px;
+    display: inline-block;
+    opacity: 0.2;
+}
+
+.fa-arrow-up:hover{
+    background-color: SeaGreen;
+    color:white;
+}
+
+.fa-arrow-down:hover{
+    background-color: FireBrick;
+    color:white;
+}
+
+
+
+
+label > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+label > input + i{ /* IMAGE STYLES */
+  cursor:pointer;
+  opacity:0.2;
+}
+label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
+  opacity: 1;
 }

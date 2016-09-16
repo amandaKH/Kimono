@@ -83,6 +83,75 @@
 	}
 	
 	
+	function rendermChart() {	
+        var mdata = [
+	  {"Name": "GROWTH",
+	   "Average Rating": 6},
+	  {"Name": "INDUSTRY",
+	    "Average Rating": 7},
+	    {"Name": "MANAGEMENT",
+	    "Average Rating": 3},
+	    {"Name": "OPERATIONS",
+	    "Average Rating": 7},
+	    {"Name": "FINANCIAL",
+	    "Average Rating": 9},
+	    {"Name": "MOAT",
+	    "Average Rating": 8},
+	    {"Name": "OTHER",
+	    "Average Rating": 7},
+	];
+	var valueLabelWidth = 1; // space reserved for value labels (right)
+	var barHeight = 25; // height of one bar
+	var barLabelWidth = 95; // space reserved for bar labels
+	var barLabelPadding = 3; // padding between bar and bar labels (left)
+	var gridLabelHeight = 1; // space reserved for gridline labels
+	var gridChartOffset = 0.2; // space between start of grid and first bar
+	var maxBarWidth = 130; // width of the bar with the max value
+	 
+	// accessor functions 
+	var barLabel = function(d) { return d['Name']; };
+	var barValue = function(d) { return parseFloat(d['Average Rating']); };
+	 
+	// scales
+	var yScale = d3.scale.ordinal().domain(d3.range(0, mdata.length)).rangeBands([0, mdata.length * barHeight]);
+	var y = function(d, i) { return yScale(i); };
+	var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
+	var x = d3.scale.linear().domain([0, 10]).range([0, maxBarWidth]);
+	
+	// svg container element
+	var mchart = d3.select('#mchart').append("svg")
+	  .attr('width', maxBarWidth + barLabelWidth + valueLabelWidth)
+	  .attr('height', gridLabelHeight + gridChartOffset + mdata.length * barHeight);
+	
+
+	// bars
+	var barsContainer = mchart.append('g')
+	  .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+	barsContainer.selectAll("rect").data(mdata).enter().append("rect")
+	  .attr('y', y)
+	  .attr('height', yScale.rangeBand()*0.7)
+	  .attr('width', function(d) { return x(barValue(d)); })
+	  .attr('stroke', 'white')
+	  .attr('opacity', .6)
+	  .attr("rx", 5)         // set the x corner curve radius
+      .attr("ry", 5)        // set the y corner curve radius
+	  .attr('fill', function(d) { return (barValue(d) < 2 ? "RGB(250, 60, 72)" : barValue(d) < 4 ? "RGB(251, 72, 87)" : barValue(d) 		< 5 ? "RGB(253, 115, 112)" : barValue(d) < 7 ? "RGB(254, 213, 189)" : barValue(d) < 8 ? "RGB(219, 238, 208)" : barValue(d) < 9 ? "RGB(154, 202, 124)" : "RGB(84, 130, 53)"); });
+	
+		// bar labels
+	var labelsContainer = mchart.append('g')
+	  .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+	labelsContainer.selectAll('text').data(mdata).enter().append('text')
+	  .attr('y', yText)
+	  .attr('stroke', 'none')
+	  .attr('fill', "RGB(128,128,128)")
+	  .attr("dy", ".15em") // vertical-align: middle
+	  .attr('text-anchor', 'end')
+	  .attr("font-size","12px")
+	  .text(barLabel);
+	    
+	    
+	}
+	
 	
      </script>
      <script>
@@ -228,6 +297,8 @@
 
       $( document ).ready(function() {
         renderChart();
+        // rendermChart();
+        $('.sentiment').prop('checked', false);
 
         console.log("ready");
         recalc();
@@ -316,15 +387,15 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
                         <h4 class="modal-title">Modal Header</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="comp name" name="compname">
+                        <input type="text" placeholder="ticker" name="compticker">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -342,15 +413,14 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a bullet</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="" name="boverview">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -374,15 +444,14 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a driver</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="growth driver" name="gdriver">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -396,7 +465,27 @@
         </div>
 
         <div id="profitability">
-            <h1>Profitability Drivers<i class="fa fa-plus-circle" aria-hidden="true"></i></h1>
+            <h1>Profitability Drivers<a data-toggle="modal" href="#proModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
+          
+          <!-- Modal -->
+                <div id="proModal" class="modal fade" role="dialog" hidden="true">
+                  <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a driver</h4>
+                      </div>
+                      <div class="modal-body">
+                        <input type="text" placeholder="profitability driver" name="pdriver">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                      </div>
+                      
+                    </div>
+                
+                  </div>
+                </div>
                 <ul>
                     <li>US, where more profitable wholesale business is strongest, is suffering</li>
                     <li>GM highly sensitive to growth (fell 1% with sales decline)</li>
@@ -405,7 +494,28 @@
         </div>
         
         <div id="ownership">
-            <h1>Notable ownership<i class="fa fa-plus-circle" aria-hidden="true"></i></h1>
+            <h1>Notable ownership<a data-toggle="modal" href="#ownModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
+          
+          <!-- Modal -->
+                <div id="ownModal" class="modal fade" role="dialog" hidden="true">
+                  <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add ownership</h4>
+                      </div>
+                      <div class="modal-body">
+                        <input type="text" placeholder="shareholder name" name="shareholder">
+                        <input type="number" placeholder="ownership %" name="ownershippct">%
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                      </div>
+                      
+                    </div>
+                
+                  </div>
+                </div>
                 <ul>
                     <li>80+ year old founder owns 60%</li>
                     <li>Armani owns 5%</li>
@@ -423,15 +533,14 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a summary point</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="" name="summary">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -454,15 +563,14 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add to description</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="" name="desc">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -481,15 +589,26 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add an industry bullet</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="title" name="indtitle">
+                        <input type="text" placeholder="explanation" name="indexplanation">
+                        
+                        <label>
+                          <input type="radio" class="sentiment" name="indsentiment" value="positive" />
+                          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </label>
+                        
+                        <label>
+                          <input type="radio" class="sentiment" name="indsentiment" value="negative" />
+                          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                        </label>
+                        
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -528,15 +647,26 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a company bullet</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="title" name="cotitle">
+                        <input type="text" placeholder="explanation" name="coexplanation">
+                        
+                        <label>
+                          <input type="radio" class="sentiment" name="cosentiment" value="positive" />
+                          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </label>
+                        
+                        <label>
+                          <input type="radio" class="sentiment" name="cosentiment" value="negative" />
+                          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                        </label>
+                        
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -572,15 +702,26 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a valuation bullet</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="title" name="valtitle">
+                        <input type="text" placeholder="explanation" name="valexplanation">
+                        
+                        <label>
+                          <input type="radio" class="sentiment" name="valsentiment" value="positive" />
+                          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </label>
+                        
+                        <label>
+                          <input type="radio" class="sentiment" name="valsentiment" value="negative" />
+                          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                        </label>
+                        
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -614,14 +755,19 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a Key Metric</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
-                      </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        <input type="text" placeholder="metric" name="metricname" size="15">
+                        <input type="number" placeholder="value" name="metricvalue" size="5">
+                        <select>
+                          <option value="M">M</option>
+                          <option value="Bn">Bn</option>
+                          <option value="%">%</option>
+                          <option value="x">x</option>
+                        </select>
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                     </div>
                 
@@ -647,15 +793,15 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Save DCF assumptions</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="Case name" name="casename">
+                        <input type="text" placeholder="Notes" name="notes">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -728,15 +874,15 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a comp</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="comp name" name="compname">
+                        <input type="text" placeholder="ticker" name="compticker">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -745,7 +891,7 @@
               <li>Italian Safilo Group (Dior, Fendi, Jimmy Choo)</li>
           </ul>
         <div id="management"></div>
-          <h1>Glass door<a data-toggle="modal" href="#mModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
+          <h1>Employee Reviews<a data-toggle="modal" href="#mModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
           
           <!-- Modal -->
                 <div id="mModal" class="modal fade" role="dialog" hidden="true">
@@ -754,19 +900,20 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a management review</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="review" name="review">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
                 </div>
+                
+        <div id="mchart"></div>
           
         <div id="views"></div>
           <h1>Notable Views<a data-toggle="modal" href="#vModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
@@ -778,15 +925,15 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a view</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="quote" name="view">
+                        <input type="text" placeholder="author" name="author">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
@@ -802,15 +949,14 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a to do</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Some text in the modal.</p>
+                        <input type="text" placeholder="to do" name="todo">
+                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
-                      <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                      </div>
+                      
                     </div>
                 
                   </div>
