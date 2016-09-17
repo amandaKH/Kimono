@@ -115,9 +115,9 @@ h2{
     padding: 3px 0;
 }
 
-.sections{
+.sections, #notableviews, #todos{
     overflow: auto;
-    height: 300px;
+    height: 250px;
 }
 
 .number{
@@ -219,6 +219,8 @@ li{
 ul {
     padding-left: 20px;
     padding-right: 5px;
+    padding-top: 0px;
+    margin-top: 0px;
 }
 
 #chart{
@@ -413,4 +415,168 @@ label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
     border: none;
     opacity: 1;
    
+}
+
+.donut > span > .fa-arrow-up:hover{
+    color: LightSlateGray;
+    background-color: white;
+    border: none;
+    opacity: 1;
+   
+}
+
+.fa-caret-up{
+    color: LightSlateGray;
+}
+
+.fa-caret-down{
+    color: LightSlateGray;
+}
+
+.author-foot, .fa-star{
+    color: LightSlateGray;
+    font-style: italic;
+    font-weight: bolder;
+    text-align: right;
+    padding: 0 2px;
+}
+
+.highlight{
+    /*background-color: #dbe4f0;*/
+    font-weight: bolder;
+    color: MidnightBlue;
+    font-style: italic;
+    
+}
+
+.author, .date, .stars {
+    padding: 0 3px;
+    display: inline-block;
+}
+
+.fa-star:hover{
+    color: #C71585;
+}
+
+.summary-bar {
+   background-color: #f2f2f2; 
+   vertical-align: top;
+
+}
+
+.recomm{
+    background-color: #267326;
+    border-radius: 5px;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    opacity: 0.7;
+    padding: 1px 5px;
+    width: 50px;
+}
+
+.logo-wrap{
+    height: 50px;
+}
+    
+.tag-wrap{
+    float: right;
+    display: inline-block;
+    width: 20%;
+    margin-top: 5px;
+}
+
+.tag{
+    background-color: MidnightBlue;
+    border-radius: 5px;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    opacity: 0.7;
+    padding: 1px 5px;
+    display: inline-block;
+    margin: 2px 2px;
+}
+
+.add-tag{
+    border-radius: 8px;
+    color: MidnightBlue;
+    border-color: MidnightBlue;
+    border-width: thin;
+    border-style: solid;
+    font-weight: bolder;
+    text-align: center;
+    opacity: 0.7;
+    padding: 1px 8px;
+    display: inline-block;
+    margin: 2px 2px;
+}
+
+.add-tag:hover{
+    background-color: MidnightBlue;
+    color: white;
+}
+
+.reco-arrow{
+   
+    width: 70px;
+}
+
+.under{
+    color: #267326;
+    font-weight: bolder;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+.recomm-wrapper{
+     margin-left: -40px;
+     margin-top: 25px;
+     vertical-align: top;
+     display: inline-block;
+      
+}
+
+.rate-wrap{
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    margin-left: 10%;
+}
+
+.rate{
+    display: inline-block;
+    vertical-align: top;
+    padding: 0;
+    margin-right: -4%;
+    text-align: right;
+}
+
+.wrap{
+    display: inline-block;
+}
+
+
+#IND, #CO, #VAL{
+    display: inline-block;
+}
+
+.indu, .comp, .valu{
+    font-weight: bolder;
+    color: MidnightBlue;
+    font-size: 1.2em;
+    font-stretch: extra-condensed;
+    text-transform: uppercase;
+    width: 40%;
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 10px;
+}
+
+.comp{
+    color: LightSlateGray;
+}
+
+.valu{
+    color: CornflowerBlue;
 }

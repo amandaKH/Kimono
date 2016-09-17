@@ -168,7 +168,7 @@
      <script>
 
      
-       function renderdChart(chartn, amt) {
+       function renderdChart(chartn, amt, key, color1, color2) {
            var data = [
              {"Date":"amount","Value": amt},
              {"Date":"other","Value": 100-amt}];
@@ -179,7 +179,7 @@
     
             var color = d3.scale.ordinal()
               .domain(["amount", "other"])
-              .range(["LightSlateGrey", "Gainsboro"]);
+              .range([color1, color2]);
                 
             var arc = d3.svg.arc()  
                 .outerRadius(radius -50)
@@ -219,12 +219,12 @@
                 })
                 .attr("dy", "0.35em")
                 .attr("text-anchor", "middle")
-                .style('fill','LightSlateGrey')
+                .style('fill',color1)
                 .style('font-family','Muli')
                 .style('font-size','1.2em')
             
             .text(function(d){
-                return (data[0].Value+"%");
+                return (key);
             
             });
             
@@ -378,9 +378,13 @@
       $( document ).ready(function() {
         renderChart();
         rendermChart();
-        renderdChart("CEO", 67);
-        renderdChart("NPS", 58);
-        renderdChart("OUTL", 52);
+        renderdChart("CEO", 67, "67%", "LightSlateGrey", "Gainsboro");
+        renderdChart("NPS", 58, "58%", "LightSlateGrey", "Gainsboro");
+        renderdChart("OUTL", 52, "52%", "LightSlateGrey", "Gainsboro");
+        renderdChart("IND", 80, "A", "MidnightBlue", "Gainsboro");
+        renderdChart("CO", 90, "A+", "LightSlateGrey", "Gainsboro");
+        renderdChart("VAL", 95, "A+", "CornflowerBlue", "Gainsboro");
+        
         $('.sentiment').prop('checked', false);
 
         console.log("ready");
@@ -456,8 +460,30 @@
    <body>
     <div id="container">
       <div id="header">
-          <img id="logo" src="http://fullhdpictures.com/wp-content/uploads/2016/06/Luxottica-Logo.jpg" alt="Luxxotica">
-          <h2>Luxxotica NYSE:LUX</h2>
+          <div class="logo-wrap">
+            <img id="logo" src="http://fullhdpictures.com/wp-content/uploads/2016/06/Luxottica-Logo.jpg" alt="Luxxotica">
+            <h2>Luxxotica NYSE:LUX</h2>
+            <div class="tag-wrap">
+                <div class="tag">STRONG MOAT</div>
+                <div class="tag">DEEP VALUE</div>
+                <div class="tag">MARKET LEADER</div>
+                <div class="add-tag">+</div>
+            </div>
+          </div>
+          <div class="summary-bar">
+            <div class="wrap">
+              <img class="reco-arrow" src="images/buyarrow.png"></img>
+              <div class = "recomm-wrapper">
+                <div class = "recomm">BUY</div>
+                <div class="under">15% undervalued</div>
+              </div>
+            </div>
+            <div class="rate-wrap">
+              <div class="rate"><span class="indu">INDUSTRY rating</span><div id = "IND"></div></div>
+              <div class="rate"><span class="comp">COMPANY rating</span><div id = "CO"></div></div>
+              <div class="rate"><span class="valu">VALUATION rating</span><div id = "VAL"></div></div>
+            </div>
+          </div>
       </div>
       <div id="sidebarl">
         <div id="bprofile">
@@ -658,8 +684,8 @@
                 
                   </div>
                 </div>
-              <div class = "descriptiontext">Luxottica manufactures and retails prescription and nonprescription fashion eyewear. Its owned brands include Ray-Ban, Oakley, Oliver Peoples, Persol, Alain Mikli and Arnette. It also manufactures eyewear under license from global brands such as Chanel, Prada & Miu Miu, Dolce & Gabbana, Bvlgari, Tiffany & Co., Versace, Burberry, Ralph Lauren, DKNY, Paul Smith, Brooks Brothers, Tory Burch, Coach, Armani, Michael Kors and Starck Eyes. The Manufacturing & Wholesale division contributed €3.6 billion (41%) of consolidated revenue and €807mm (43%) of consolidated operating income, after elimination of intercompany sales, in 2015.
-                <p>In the U.S the company operates retail stores such as LensCrafters, Sunglass Hut, and Pearle Vision, as well as shop-in-shops in Sears (Sears Optical), Target (Target Optical), and Macy’s (LensCrafters). Retail distribution contributed 59% of consolidated revenue and 57% of consolidated operating income, after elimination of intercompany sales, in 2015. The company also provides vision care insurance in the United States through EyeMed.</p>
+              <div class = "descriptiontext">Luxottica manufactures and retails prescription and nonprescription fashion eyewear. Its owned brands include Ray-Ban, Oakley, Oliver Peoples, Persol, Alain Mikli and Arnette. It also manufactures eyewear under license from global brands such as Chanel, Prada & Miu Miu, Dolce & Gabbana, Bvlgari, Tiffany & Co., Versace, Burberry, Ralph Lauren, DKNY, Paul Smith, Brooks Brothers, Tory Burch, Coach, Armani, Michael Kors and Starck Eyes. The Manufacturing & Wholesale division contributed E3.6 billion (41%) of consolidated revenue and E807mm (43%) of consolidated operating income, after elimination of intercompany sales, in 2015.
+                <p>In the U.S the company operates retail stores such as LensCrafters, Sunglass Hut, and Pearle Vision, as well as shop-in-shops in Sears (Sears Optical), Target (Target Optical), and Macy's (LensCrafters). Retail distribution contributed 59% of consolidated revenue and 57% of consolidated operating income, after elimination of intercompany sales, in 2015. The company also provides vision care insurance in the United States through EyeMed.</p>
               </div>
           </div>
           <div id = "industry">
@@ -1024,6 +1050,20 @@
                     </div>
                 
                   </div>
+                </div>
+                <div id = "notableviews">
+                <ul>
+                    <li>I think today in front of you, you've more than <span class="highlight">30 years of experience between myself, Stef and Nicol and Paolo. Even in this situation and in this configuration, we're solid.</span><div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>If you now move to the right hand side of the page, <span class="highlight">retail deliver 20% growth on current FX, here clearly the tailwinds from the U.S. dollar evolution [ph] stronger than on our own retail division. </span>As you know probably 75% of our retail business is denominated in the U.S. dollar and therefore there is a major tailwinds in our results.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>The wholesale that you see on the center upper part of the page grew 6% on a full year below our target and our expectation which was 9 to 11. The main reading here it's really related to the challenging performance of our Oakley business in 2015.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>China and Brazil, these were our positive surprises as well. We have manufacturing in those countries. We're sort of naturally edged in terms of currency effect. Having said that, China is relatively small for business for us, accounts only for 3% of our total sales but in China, Mainland China contrary to what our competitors did, we grew 15% in China and astonishing performance in Brazil as well.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>Evolving our strategy sits on our vertically integrated model and this is our DNA. We're not changing it. We are evolving as also the Chairman has [ph]. Vertical integration helped us a lot, our end to end approach we go from sketches, product design, manufacturing, distribution.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>Relying on this pillar, we're happy to confirm the commitment we gave you two years ago. We said we're going to double the size of the company in 10 years, the good news we're well on track of that so we can confirm that by 2024 we will be a E15 billion company. In the next two years our e-commerce business very profitable will grow upto 7% of total group sales.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>As you know probably 75% of our retail business is denominated in the U.S. dollar and therefore there is a major tailwinds in our results.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    <li>Well if <span class="highlight">Ray-Ban has a hiccup we're in trouble </span>but we're doing something, we're doing actually three things together to keep the equity of Ray-Ban up...<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
+                    
+                    
+                </ul>
                 </div>
       
         <div id="todos">
