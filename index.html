@@ -2,16 +2,75 @@
 <html>
    <head>
      <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+     <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAWLW9urLqU-ot7W2XA2BDJgubRMN9XyMI",
+          authDomain: "kimonohub-ff2cd.firebaseapp.com",
+          databaseURL: "https://kimonohub-ff2cd.firebaseio.com",
+          storageBucket: "",
+          messagingSenderId: "974458846894"
+        };
+        firebase.initializeApp(config);
+     </script>
      <script src="https://use.fontawesome.com/d484aa907d.js"></script>
      <link rel="stylesheet" href="kh.css">
      <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
      <script src="https://d3js.org/d3.v2.min.js"></script>
      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
      <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     
      <script type="text/javascript">
+     
     // Array of containing objects; "id" field is question ID,
     // "profile_question" is question text.
 
+
+//SIGN IN AS amanda@kimonohub.com password: kimonohubuser
+
+  firebase.auth().signInWithEmailAndPassword('amanda@kimonohub.com', 'kimonohubuser').catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+  });
+  
+  function writeNewBullet(bullet, type, docID) {
+    // A bullet entry.
+    var bulletData = {
+      bullet: bullet,
+      type: type
+    };
+  
+    var path = 'docs/' + docID;
+  
+    // Get a key for a new Bullet.
+    var newBulletKey = firebase.database().ref().child(path).push().key;
+  
+    // Write the new bullet's data simultaneously in the database
+    var updates = {};
+    updates[path + '/' + newBulletKey] = bulletData;
+  
+    firebase.database().ref().update(updates).then(function() {
+      console.log("Saved bullet!");
+    });
+  }
+  
+  function buttonClick(type, input_name) {
+    var inputElements = document.getElementsByName(input_name);
+    
+    // We ASSUME that there is a single element with the given name.
+    if (inputElements.length == 0 || inputElements.length > 1) {
+      throw "Expected one element with name '" + input_name + "', got " + inputElements.length;
+    }
+    
+    var inputElement = inputElements[0];
+    var documentID = 555; // TODO: Replace with real document ID.
+    writeNewBullet(inputElement.value, type, documentID)
+    
+    // TODO: Reset document to account for new bullet entry.
+  }
  
 	function renderChart() {	
         var cdata = [
@@ -78,13 +137,10 @@
 	  .attr('text-anchor', 'end')
 	  .attr("font-size","12px")
 	  .text(barLabel);
-	    
-	    
 	}
 
 </script>
 <script>
-	
 	function rendermChart() {	
         var mdata = [
 	    
@@ -467,7 +523,19 @@
                 <div class="tag">STRONG MOAT</div>
                 <div class="tag">DEEP VALUE</div>
                 <div class="tag">MARKET LEADER</div>
-                <div class="add-tag">+</div>
+                <div class = "modalinline">
+                <!-- Modal -->
+                <div id="tagModal" class="modal fade" role="dialog" hidden="true">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div>
+                      <input type="text" class="add-tag" placeholder="tag" name="tag">
+                    </div>
+                
+                  </div>
+                </div>
+              </div>
+                <a data-toggle="modal" href="#tagModal"><div class="add-tag">+</div></a>
             </div>
           </div>
           <div class="summary-bar">
@@ -527,7 +595,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="boverview">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('business-overview', 'boverview')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>

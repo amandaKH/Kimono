@@ -273,8 +273,14 @@ input{
     font-family: inherit;
 }
 
+
+
 input[type=text] {
     width: 85%;
+}
+
+input[name="tag"] {
+    width: 50px;
 }
 
 input[name="shareholder"] {
@@ -481,9 +487,12 @@ label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
     
 .tag-wrap{
     float: right;
-    display: inline-block;
-    width: 20%;
+    width: 30%;
     margin-top: 5px;
+}
+
+.modalinline{
+    display: inline-block;
 }
 
 .tag{
@@ -541,14 +550,16 @@ label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
     display: inline-block;
     vertical-align: top;
     text-align: right;
-    margin-left: 10%;
+    position: absolute;
+    right: 40px;
+    padding-right: 40px;
 }
 
 .rate{
     display: inline-block;
     vertical-align: top;
     padding: 0;
-    margin-right: -4%;
+    margin-right: -5%;
     text-align: right;
 }
 
