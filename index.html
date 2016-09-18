@@ -36,14 +36,8 @@
   // ...
   });
   
-  function writeNewBullet(bullet, type, docID) {
-    // A bullet entry.
-    var bulletData = {
-      bullet: bullet,
-      type: type
-    };
-  
-    var path = 'docs/' + docID;
+  function writeNewBullet(bulletData, docID) {
+    var path = 'docs/' + docID +'/' + bulletData.type;
   
     // Get a key for a new Bullet.
     var newBulletKey = firebase.database().ref().child(path).push().key;
@@ -56,21 +50,58 @@
       console.log("Saved bullet!");
     });
   }
+
+  // This function takes the name of a collection of radio buttons. It
+  // returns the value of the button that is checked. We expect exactly
+  // ONE button to be checked.
   
-  function buttonClick(type, input_name) {
-    var inputElements = document.getElementsByName(input_name);
+  
+  function buttonClick(type, inputs) {
+    var dbData = {
+      type: type
+    };
+    Object.keys(inputs).forEach(function(key) {
+       var val = inputs[key];
+       var inputElements = document.getElementsByName(val);
+       if (inputElements[0].nodeName == "SPAN"){
+         dbData[key] = inputElements[0].innerHTML; 
+       }
+       else if (inputElements.length == 1) {
+        dbData[key] = inputElements[0].value; 
+        inputElements[0].value = "";
+       }
+       else if (inputElements.length == 2) {
+         if (inputElements[0].type == "radio"){
+           for (var i=0; i<inputElements.length; i++) {
+             if (inputElements[i].checked == true){
+               dbData[key] = inputElements[i].value; 
+               inputElements[i].checked = false;
+               
+             }
+           }
+         }
+       }
+       
+    })
     
-    // We ASSUME that there is a single element with the given name.
-    if (inputElements.length == 0 || inputElements.length > 1) {
-      throw "Expected one element with name '" + input_name + "', got " + inputElements.length;
-    }
     
-    var inputElement = inputElements[0];
-    var documentID = 555; // TODO: Replace with real document ID.
-    writeNewBullet(inputElement.value, type, documentID)
     
+    var documentID = 101; // TODO: Replace with real document ID.
+    writeNewBullet(dbData, documentID)
+    
+    // TODO: Show entry on html
     // TODO: Reset document to account for new bullet entry.
   }
+  
+  function addNew (val, parent, format) {
+    var newentry = document.getElementsByName(val)[0].value;
+    var parent = document.getElementById(parent);
+    var child = document.createElement(format);
+    child.appendChild(document.createTextNode(newentry));
+    parent.appendChild(child);
+  }
+  
+
  
 	function renderChart() {	
         var cdata = [
@@ -595,14 +626,14 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="boverview">
-                        <button type="button" class="submitdata" onclick="buttonClick('business-overview', 'boverview')"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('boverview','bo-ul','li') ; buttonClick('business-overview', {'bullet': 'boverview'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
                 
                   </div>
                 </div>
-                <ul>
+                <ul id="bo-ul">
                     <li>Optical (1/3) and Sun (2/3)</li>
                     <li>Premium European and North American</li>
                     <li>Pays 5-15% of sales as royalties to premium brands, as well as covering promotions, manufacturing and design</li>
@@ -626,7 +657,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="growth driver" name="gdriver">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('growth-drivers', {'bullet':'gdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -656,7 +687,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="profitability driver" name="pdriver">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('profitability', {'bullet':'pdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -686,7 +717,7 @@
                       <div class="modal-body">
                         <input type="text" placeholder="shareholder name" name="shareholder">
                         <input type="number" placeholder="ownership %" name="ownershippct">%
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('ownership', {'shareholder': 'shareholder', 'ownershippct': 'ownershippct'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -715,7 +746,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="summary">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('summary', {'bullet':'summary'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -745,7 +776,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="desc">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('description', {'bullet':'desc'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -783,7 +814,7 @@
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('industry-ideas', {'title': 'indtitle', 'bullet': 'indexplanation', 'sentiment': 'indsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -841,7 +872,7 @@
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('company-ideas', {'title': 'cotitle', 'bullet': 'coexplanation', 'sentiment': 'cosentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -896,7 +927,7 @@
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('value-ideas', {'title': 'valtitle', 'bullet': 'valexplanation', 'sentiment': 'valsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -938,13 +969,13 @@
                       <div class="modal-body">
                         <input type="text" placeholder="metric" name="metricname" size="15">
                         <input type="number" placeholder="value" name="metricvalue" size="5">
-                        <select>
+                        <select name="metricunit">
                           <option value="M">M</option>
                           <option value="Bn">Bn</option>
                           <option value="%">%</option>
                           <option value="x">x</option>
                         </select>
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('key-metrics', {'metric': 'metricname', 'metric-value': 'metricvalue', 'unit': 'metricunit' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                     </div>
                 
@@ -976,7 +1007,7 @@
                       <div class="modal-body">
                         <input type="text" placeholder="Case name" name="casename">
                         <input type="text" placeholder="Notes" name="notes">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('case-values', {'name': 'casename', 'notes': 'notes', 'current-price': 'current-price', 'intrinsic-price': 'intrinsic-price', 'percent-undervalued':'percent-undervalued', 'rev-amt-five':'rev-amt-five', 'gross-amt-five': 'gross-amt-five', 'gross-pct-five': 'gross-pct-five', 'opex-amt-five': 'opex-amt-five', 'fcf-amt-five':'fcf-amt-five', 'fcf-pct-five' : 'fcf-pct-five', 'terminal-fcf': 'terminal-fcf', 'discount-rate' : 'discount-rate', 'shares-outstanding':'shares-outstanding', 'debt' : 'debt'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -985,9 +1016,9 @@
                 </div>
             <div id = "dcfcalc">
                 <div id="intrinsic">
-                  <div class="intrin">Current Price: <div class="number"><span class="current-price"></div></div>
-                  <div class="intrin">Intrinsic Price: <div class="number2"><span class="intrinsic-price"></span></div></div>
-                  <div id="intrinnormal">% undervalued: <div class="number"><span class="percent-undervalued"></span></div></div>
+                  <div class="intrin">Current Price: <div class="number"><span class="current-price" name="current-price"></div></div>
+                  <div class="intrin">Intrinsic Price: <div class="number2"><span class="intrinsic-price" name="intrinsic-price"></span></div></div>
+                  <div id="intrinnormal">% undervalued: <div class="number"><span class="percent-undervalued" name="percent-undervalued"></span></div></div>
                 </div>
               <h4>ASSUMPTIONS</h4>
               <table>
@@ -1001,43 +1032,43 @@
                   <td class="left">Revenue</td>
                   <td><i id="five-revenue-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-revenue-pct"></span><i id="five-revenue-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
                   <td><span class="revenue-ltm"></span></td>
-                  <td><span class="rev-amt-five"></span></td>
+                  <td><span class="rev-amt-five" name="rev-amt-five"></span></td>
                 </tr>
                 <tr>
                   <td class="left">Gross Margin</td>
                   <td></td>
                   <td><span class="gross-margin-ltm"></span></td>
-                  <td><span class="gross-amt-five"></span></td>
+                  <td><span class="gross-amt-five" name="gross-amt-five"></span></td>
                 </tr>
                 <tr class="italic blue">
                   <td class="left">Margin %</td>
                   <td><i id="five-gross-margin-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-gross-margin-pct"></span><i id="five-gross-margin-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
                   <td><span class="gross-margin-pct"</span></td>
-                  <td><span class="gross-pct-five"></span></td>
+                  <td><span class="gross-pct-five" name="gross-pct-five"></span></td>
                 </tr>
                 <tr>
                   <td class="left">Expenses</td>
                   <td><i id="five-opex-margin-pct-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="five-opex-margin-pct"></span><i id="five-opex-margin-pct-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></td>
                   <td><span class="opex-margin-ltm"></span></td>
-                  <td><span class="opex-amt-five"></span></td>
+                  <td><span class="opex-amt-five" name="opex-amt-five"></span></td>
                 </tr>
                 <tr class="blue">
                   <td class="left">FCF</td>
                   <td></td>
                   <td><span class="fcf-ltm"></span></td>
-                  <td><span class="fcf-amt-five"></span></td>
+                  <td><span class="fcf-amt-five" name="fcf-amt-five"></span></td>
                 </tr>
                  <tr class="italic blue">
                   <td class="left">FCF margin</td>
                   <td></td>
                   <td><span class="fcf-margin-pct"></span></td>
-                  <td><span class="fcf-pct-five"></span></td>
+                  <td><span class="fcf-pct-five" name="fcf-pct-five"></span></td>
                 </tr>
               </table>
-              <li class="metric">Terminal Growth: <div class="number"><i id="terminal-fcf-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="terminal-fcf"></span><i id="terminal-fcf-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></div></li>
-              <li class="metric">Discount Rate: <div class="number"><i id="discount-rate-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="discount-rate"></span><i id="discount-rate-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></div></li>
-              <li class="metric">Shares o/s (mm): <div class="number"><span class="shares-outstanding"></span></div></li>
-              <li class="metric">Net Debt (mm): <div class="number"><span class="debt"></span></div></li>
+              <li class="metric">Terminal Growth: <div class="number"><i id="terminal-fcf-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="terminal-fcf" name="terminal-fcf"></span><i id="terminal-fcf-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></div></li>
+              <li class="metric">Discount Rate: <div class="number"><i id="discount-rate-up" href="" class="fa fa-caret-up" aria-hidden="true"></i><span class="discount-rate" name="discount-rate"></span><i id="discount-rate-down" href="" class="fa fa-caret-down" aria-hidden="true"></i></div></li>
+              <li class="metric">Shares o/s (mm): <div class="number"><span class="shares-outstanding" name="shares-outstanding"></span></div></li>
+              <li class="metric">Net Debt (mm): <div class="number"><span class="debt" name="debt"></span></div></li>
             </div>
         </div>
 
@@ -1057,7 +1088,7 @@
                       <div class="modal-body">
                         <input type="text" placeholder="comp name" name="compname">
                         <input type="text" placeholder="ticker" name="compticker">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('comps', {'compname': 'compname', 'compticker': 'compticker'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1082,7 +1113,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="review" name="review">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('management', {'bullet': 'review'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1112,7 +1143,7 @@
                       <div class="modal-body">
                         <input type="text" placeholder="quote" name="view">
                         <input type="text" placeholder="author" name="author">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('views', {'bullet': 'view', 'author': 'author'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1149,7 +1180,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="to do" name="todo">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('to-dos', {'bullet': 'todo'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
