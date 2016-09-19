@@ -93,15 +93,52 @@
     // TODO: Reset document to account for new bullet entry.
   }
   
-  function addNew (val, parent, format) {
+  function addNew (val, position, format) {
     var newentry = document.getElementsByName(val)[0].value;
-    var parent = document.getElementById(parent);
+    var parent = document.getElementById(position);
     var child = document.createElement(format);
     child.appendChild(document.createTextNode(newentry));
     parent.appendChild(child);
   }
   
+  function addNew2 (val1, val2, position, format, end) {
+    var newentry1 = document.getElementsByName(val1)[0].value;
+    var newentry2 = document.getElementsByName(val2)[0].value;
+    var parent = document.getElementById(position);
+    var child = document.createElement(format);
+    child.appendChild(document.createTextNode(newentry1+': '+newentry2+end));
+    parent.appendChild(child);
+  }
+  
+  function addNew3 (val1, val2, val3, position, format) {
+    var newentry1 = document.getElementsByName(val1)[0].value;
+    var newentry2 = document.getElementsByName(val2)[0].value;
+    var newentry3 = 'negative';
+    if (document.getElementsByName(val3)[0].checked){
+      newentry3 = 'positive';
+    }
+    var parent = document.getElementById(position+'-'+newentry3);
+    $(parent).append('<li><div class = "bold-title">'+newentry1+': </div> '+newentry2+'</li>');
+  }
 
+ function addNew4 (val1, val2, val3, position) {
+    var newentry1 = document.getElementsByName(val1)[0].value;
+    var newentry2 = document.getElementsByName(val2)[0].value;
+    var newentry3 = document.getElementsByName(val3)[0].value;
+    
+    var parent = document.getElementById(position);
+    $(parent).append('<li class="metric">'+newentry1+': <div class="number">'+newentry2+newentry3+'</div></li>');
+  }
+  
+function addNew5 (val1, val2, position) {
+    var newentry1 = document.getElementsByName(val1)[0].value;
+    var newentry2 = document.getElementsByName(val2)[0].value;
+    var d = (new Date()).toString().split(' ').splice(1,3).join(' ');
+    
+    var parent = document.getElementById(position);
+    $(parent).append('<li>'+newentry1+'</span><div class = "author-foot"><span class = "author">'+newentry2+'</span><span class ="date">'+d+'</span><span class="stars">1<i class="fa fa-star" aria-hidden="true"></i></span></div></li>');
+  }  
+  
  
 	function renderChart() {	
         var cdata = [
@@ -717,14 +754,14 @@
                       <div class="modal-body">
                         <input type="text" placeholder="shareholder name" name="shareholder">
                         <input type="number" placeholder="ownership %" name="ownershippct">%
-                        <button type="button" class="submitdata" onclick="buttonClick('ownership', {'shareholder': 'shareholder', 'ownershippct': 'ownershippct'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew2('shareholder', 'ownershippct','sh-ul','li','%') ; buttonClick('ownership', {'shareholder': 'shareholder', 'ownershippct': 'ownershippct'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
                 
                   </div>
                 </div>
-                <ul>
+                <ul id="sh-ul">
                     <li>80+ year old founder owns 60%</li>
                     <li>Armani owns 5%</li>
                 </ul>
@@ -744,16 +781,16 @@
                         <h4 class="modal-title">Add a comp</h4>
                       </div>
                       <div class="modal-body">
-                        <input type="text" placeholder="comp name" name="compname">
-                        <input type="text" placeholder="ticker" name="compticker">
-                        <button type="button" class="submitdata" onclick="buttonClick('comps', {'compname': 'compname', 'compticker': 'compticker'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <input type="text" placeholder="comp name" name="comp-name">
+                        <input type="text" placeholder="ticker" name="comp-ticker">
+                        <button type="button" class="submitdata" onclick="addNew2('comp-name', 'comp-ticker','comp-ul','li','') ; buttonClick('comps', {'compname': 'comp-name', 'compticker': 'comp-ticker'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
                 
                   </div>
                 </div>
-          <ul>
+          <ul id="comp-ul">
               <li>Italian Safilo Group (Dior, Fendi, Jimmy Choo)</li>
           </ul>
       </div>
@@ -841,7 +878,7 @@
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata" onclick="buttonClick('industry-ideas', {'title': 'indtitle', 'bullet': 'indexplanation', 'sentiment': 'indsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew3('indtitle', 'indexplanation', 'indsentiment', 'ind-ul', 'li') ; buttonClick('industry-ideas', {'title': 'indtitle', 'bullet': 'indexplanation', 'sentiment': 'indsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -851,7 +888,7 @@
               <div class = "sections">
                 <div class = "headwinds">
                   <img class="arrow" src="images/sellarrow.png" alt=" ">
-                  <ul>
+                  <ul id="ind-ul-negative">
                       <li><div class = "bold-title">Lower traffic in retail: </div> Foot traffic is down and declining: tourism, foot traffic (esp in malls where new Macy store-in-stores are planned) are way down (especially in accessories).</li>
                       <li><div class = "bold-title">Competition from 'suppliers': </div> a lot of brands are starting to take their sunglass sales in-house, likely a result of building stronger online presences and being less dependent on LUX's distribution. especially true for sunglasses, where LUX has chosen to focus.
                         <ul>
@@ -866,7 +903,7 @@
                 </div>
                 <div class = "tailwinds">
                   <img class="arrow" src="images/buyarrow.png" alt=" ">
-                  <ul>
+                  <ul id="ind-ul-positive">
                       <li><div class = "bold-title">Increased sunglasses penetration: </div> China & Emerging markets to go from 20% current penetration to 60% as in the US. This will likely take some time, as the trend is typically to go to 'fake' first.</li>
                   </ul>
                 </div>
@@ -899,7 +936,7 @@
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata" onclick="buttonClick('company-ideas', {'title': 'cotitle', 'bullet': 'coexplanation', 'sentiment': 'cosentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew3('cotitle', 'coexplanation', 'cosentiment', 'co-ul', 'li') ; buttonClick('company-ideas', {'title': 'cotitle', 'bullet': 'coexplanation', 'sentiment': 'cosentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -909,7 +946,7 @@
               <div class = "sections">
                 <div class = "headwinds">
                   <img class="arrow" src="images/sellarrow.png" alt=" ">
-                  <ul>
+                  <ul id="co-ul-negative">
                       <li><div class = "bold-title">Flagship brands Rayban and Oakley are faltering: </div> RayBan (30% of sales) now oversupplied (now at Amazon and Costco), LUX has tried forcing a minimum price on its suppliers but it is not working (Costco selling way below the minimum price due to purchase of third party inventory). </li>
                       <li><div class = "bold-title">Doubling down on a declining distribution network: </div> planning to open 900+ stores and refurbish 300. Stores require heavy promotional budgets and inventory, as compared to online or specialized independent eye care professionals. </li>
                       <li><div class = "bold-title">Management/ownership shifts: </div> 61% of company held by 80+ founder, had to come back to run business, soon shares will be distributed to his 6 children (from 3 wives) with additional 25% to current wife. Wants to keep kids far away from operations. CEO & CFO of 10 years left in 2014. </li>
@@ -918,7 +955,7 @@
                 </div>
                 <div class = "tailwinds">
                   <img class="arrow" src="images/buyarrow.png" alt=" ">
-                  <ul>
+                  <ul id="co-ul-positive">
                       <li><div class = "bold-title">Store-in-Store: </div> growing presence in Target, Macy, and Sears likely to provide higher operating margins in retail segment. </li>
                       <li><div class = "bold-title">Wearables: </div> deal with Google may provide interesting upside. </li>
                       <li><div class = "bold-title">Insane distribution: </div> their scale benefits are enormous and they've created a nice stream of no-hassle profits for the partners they license brands from. Unlikely to lose this moat anytime soon. </li>
@@ -954,7 +991,7 @@
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata" onclick="buttonClick('value-ideas', {'title': 'valtitle', 'bullet': 'valexplanation', 'sentiment': 'valsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew3('valtitle', 'valexplanation', 'valsentiment', 'val-ul', 'li') ; buttonClick('value-ideas', {'title': 'valtitle', 'bullet': 'valexplanation', 'sentiment': 'valsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -964,7 +1001,7 @@
               <div class = "sections">
                 <div class = "headwinds">
                   <img class="arrow" src="images/sellarrow.png" alt=" ">
-                  <ul>
+                  <ul id="val-ul-negative">
                       <li><div class = "bold-title">Growth premium no longer justified: </div> Quite rich in general, likely too expensive when lower growth is factored in and competitive changes in the landscape start to show more.</li>
                       <li><div class = "bold-title">Retail footprint losing importance: </div> how much of their 10x multiple is due to the retail footprint, which is quickly losing importance</li>
                       <li><div class = "bold-title">Weak cash return: </div> Low dividend, weak ROIC historically</li>
@@ -972,7 +1009,7 @@
                 </div>
                 <div class = "tailwinds">
                   <img class="arrow" src="images/buyarrow.png" alt=" ">
-                  <ul>
+                  <ul id="val-ul-positive">
                       <li><div class = "bold-title">Potential buyback on horizon: </div> bought back 1% of shares in 2016, got authorized for another 2%</li>
                   </ul>
                 </div>
@@ -1002,7 +1039,7 @@
                           <option value="%">%</option>
                           <option value="x">x</option>
                         </select>
-                        <button type="button" class="submitdata" onclick="buttonClick('key-metrics', {'metric': 'metricname', 'metric-value': 'metricvalue', 'unit': 'metricunit' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew4('metricname', 'metricvalue', 'metricunit','metriclist') ; buttonClick('key-metrics', {'metric': 'metricname', 'metric-value': 'metricvalue', 'unit': 'metricunit' })"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                     </div>
                 
@@ -1148,7 +1185,7 @@
                       <div class="modal-body">
                         <input type="text" placeholder="quote" name="view">
                         <input type="text" placeholder="author" name="author">
-                        <button type="button" class="submitdata" onclick="buttonClick('views', {'bullet': 'view', 'author': 'author'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew5('view', 'author', 'nv-ul'); buttonClick('views', {'bullet': 'view', 'author': 'author'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1156,7 +1193,7 @@
                   </div>
                 </div>
                 <div id = "notableviews">
-                <ul>
+                <ul id="nv-ul">
                     <li>I think today in front of you, you've more than <span class="highlight">30 years of experience between myself, Stef and Nicol and Paolo. Even in this situation and in this configuration, we're solid.</span><div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
                     <li>If you now move to the right hand side of the page, <span class="highlight">retail deliver 20% growth on current FX, here clearly the tailwinds from the U.S. dollar evolution [ph] stronger than on our own retail division. </span>As you know probably 75% of our retail business is denominated in the U.S. dollar and therefore there is a major tailwinds in our results.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
                     <li>The wholesale that you see on the center upper part of the page grew 6% on a full year below our target and our expectation which was 9 to 11. The main reading here it's really related to the challenging performance of our Oakley business in 2015.<div class = "author-foot"><span class = "author">Management</span><span class ="date">3/31/2016</span><span class="stars">5<i class="fa fa-star" aria-hidden="true"></i></span></div></li>
