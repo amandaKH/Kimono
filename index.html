@@ -657,14 +657,14 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="growth driver" name="gdriver">
-                        <button type="button" class="submitdata" onclick="buttonClick('growth-drivers', {'bullet':'gdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick=" addNew('gdriver','gd-ul','li') ; buttonClick('growth-drivers', {'bullet':'gdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
                 
                   </div>
                 </div>
-                <ul>
+                <ul id="gd-ul">
                     <li>Growing in-house brands</li>
                     <li>Licensing luxury brands</li>
                     <li>Increasing vertical integration</li>
@@ -687,14 +687,14 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="profitability driver" name="pdriver">
-                        <button type="button" class="submitdata" onclick="buttonClick('profitability', {'bullet':'pdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('pdriver','pd-ul','li') ; buttonClick('profitability', {'bullet':'pdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
                 
                   </div>
                 </div>
-                <ul>
+                <ul id="pd-ul">
                     <li>US, where more profitable wholesale business is strongest, is suffering</li>
                     <li>GM highly sensitive to growth (fell 1% with sales decline)</li>
                     <li>Move production to lower cost countries</li>
@@ -729,6 +729,33 @@
                     <li>Armani owns 5%</li>
                 </ul>
         </div>
+      
+      <div id="comps"></div>
+          <h1>Comps<a data-toggle="modal" href="#cModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
+          
+          <!-- Modal -->
+                <div id="cModal" class="modal fade" role="dialog" hidden="true">
+                  <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        <h4 class="modal-title">Add a comp</h4>
+                      </div>
+                      <div class="modal-body">
+                        <input type="text" placeholder="comp name" name="compname">
+                        <input type="text" placeholder="ticker" name="compticker">
+                        <button type="button" class="submitdata" onclick="buttonClick('comps', {'compname': 'compname', 'compticker': 'compticker'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                      </div>
+                      
+                    </div>
+                
+                  </div>
+                </div>
+          <ul>
+              <li>Italian Safilo Group (Dior, Fendi, Jimmy Choo)</li>
+          </ul>
       </div>
       <div id="content">
           <div id = "summary">
@@ -746,7 +773,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="summary">
-                        <button type="button" class="submitdata" onclick="buttonClick('summary', {'bullet':'summary'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('summary','summ-ul','li') ; buttonClick('summary', {'bullet':'summary'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -754,7 +781,7 @@
                   </div>
                 </div>
               <div class = "summarybox">
-                  <ul>
+                  <ul id="summ-ul">
                       <li>Amazing moat, deep integration and wide distribution network likely to protect the company for several years</li>
                       <li>Changing retail landscape will cause growth levels likely to decline, may lead to multiple correction in the next 6 - 12 months</li>
                       <li>Succession issues likely to cause distraction over next 2-3 years</li>
@@ -776,14 +803,14 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="desc">
-                        <button type="button" class="submitdata" onclick="buttonClick('description', {'bullet':'desc'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('desc','desc-div','p') ; buttonClick('description', {'bullet':'desc'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
                 
                   </div>
                 </div>
-              <div class = "descriptiontext">Luxottica manufactures and retails prescription and nonprescription fashion eyewear. Its owned brands include Ray-Ban, Oakley, Oliver Peoples, Persol, Alain Mikli and Arnette. It also manufactures eyewear under license from global brands such as Chanel, Prada & Miu Miu, Dolce & Gabbana, Bvlgari, Tiffany & Co., Versace, Burberry, Ralph Lauren, DKNY, Paul Smith, Brooks Brothers, Tory Burch, Coach, Armani, Michael Kors and Starck Eyes. The Manufacturing & Wholesale division contributed E3.6 billion (41%) of consolidated revenue and E807mm (43%) of consolidated operating income, after elimination of intercompany sales, in 2015.
+              <div id="desc-div" class = "descriptiontext">Luxottica manufactures and retails prescription and nonprescription fashion eyewear. Its owned brands include Ray-Ban, Oakley, Oliver Peoples, Persol, Alain Mikli and Arnette. It also manufactures eyewear under license from global brands such as Chanel, Prada & Miu Miu, Dolce & Gabbana, Bvlgari, Tiffany & Co., Versace, Burberry, Ralph Lauren, DKNY, Paul Smith, Brooks Brothers, Tory Burch, Coach, Armani, Michael Kors and Starck Eyes. The Manufacturing & Wholesale division contributed E3.6 billion (41%) of consolidated revenue and E807mm (43%) of consolidated operating income, after elimination of intercompany sales, in 2015.
                 <p>In the U.S the company operates retail stores such as LensCrafters, Sunglass Hut, and Pearle Vision, as well as shop-in-shops in Sears (Sears Optical), Target (Target Optical), and Macy's (LensCrafters). Retail distribution contributed 59% of consolidated revenue and 57% of consolidated operating income, after elimination of intercompany sales, in 2015. The company also provides vision care insurance in the United States through EyeMed.</p>
               </div>
           </div>
@@ -1072,32 +1099,7 @@
             </div>
         </div>
 
-        <div id="comps"></div>
-          <h1>Comps<a data-toggle="modal" href="#cModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
-          
-          <!-- Modal -->
-                <div id="cModal" class="modal fade" role="dialog" hidden="true">
-                  <div class="modal-dialog">
-                
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
-                        <h4 class="modal-title">Add a comp</h4>
-                      </div>
-                      <div class="modal-body">
-                        <input type="text" placeholder="comp name" name="compname">
-                        <input type="text" placeholder="ticker" name="compticker">
-                        <button type="button" class="submitdata" onclick="buttonClick('comps', {'compname': 'compname', 'compticker': 'compticker'})"><i class="fa fa-check" aria-hidden="true"></i></button>
-                      </div>
-                      
-                    </div>
-                
-                  </div>
-                </div>
-          <ul>
-              <li>Italian Safilo Group (Dior, Fendi, Jimmy Choo)</li>
-          </ul>
+        
         <div id="management"></div>
           <h1>Employee Reviews<a data-toggle="modal" href="#mModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
           
@@ -1113,7 +1115,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="review" name="review">
-                        <button type="button" class="submitdata" onclick="buttonClick('management', {'bullet': 'review'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('review','mgmt-ul','li') ; buttonClick('management', {'bullet': 'review'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1126,6 +1128,9 @@
             <div class="donut"><span>Outlook <i id="outlook" class="fa fa-arrow-up" aria-hidden="true"></i></span><div id = "OUTL"></div></div>
             <div id="mchart"></div>
         </div>
+        <ul id="mgmt-ul">
+                    <li>81 year old CEO and founder had to step in after departure of long ternured CFO and CEO</li>
+                </ul>
           
         <div id="views"></div>
           <h1>Notable Views<a data-toggle="modal" href="#vModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
@@ -1165,8 +1170,8 @@
                 </ul>
                 </div>
       
-        <div id="todos">
-            <h1>Additional Work to do<a data-toggle="modal" href="#todoModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
+        <div id="tododiv">
+            <h1>Additional items to diligence<a data-toggle="modal" href="#todoModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h1>
           
           <!-- Modal -->
                 <div id="todoModal" class="modal fade" role="dialog" hidden="true">
@@ -1180,7 +1185,7 @@
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="to do" name="todo">
-                        <button type="button" class="submitdata" onclick="buttonClick('to-dos', {'bullet': 'todo'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('todo','todo-ul','li') ; buttonClick('to-dos', {'bullet': 'todo'})"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1188,7 +1193,7 @@
                   </div>
                 </div>
             <div id = "todos">
-                <ul>
+                <ul id="todo-ul">
                     <li>Survey to ascertain demographic trends in optic + sun purchasing</li>
                     <li>review licensing agreements and how they've evolved</li>
                     <li>understand online sunglass purchasing trend</li>
