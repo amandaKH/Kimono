@@ -446,6 +446,7 @@ function addNew6 (val1, position) {
         $( ".fcf-amt-terminal" ).text(fmtPrice(derived["fcf-amt-terminal"]))
         $( ".intrinsic-price" ).text(fmtPdeci(derived["intrinsic-price"]))
         $( ".percent-undervalued" ).text(fmtPct(derived["percent-undervalued"]))
+        $(".under").text(fmtPct(derived["percent-undervalued"])+" undervalued")
       }
 
       function recalc() {
@@ -511,6 +512,7 @@ function addNew6 (val1, position) {
 
 
 	derived["percent-undervalued"] = (derived["intrinsic-price"]/data["current-price"])-1;
+	
 
         redisplay();
         console.log(derived ["fcf-amt-five"]);
