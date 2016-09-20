@@ -505,7 +505,10 @@ label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
     padding: 1px 5px;
     display: inline-block;
     margin: 2px 2px;
+    text-transform: uppercase;
 }
+
+
 
 .add-tag{
     border-radius: 8px;
@@ -592,4 +595,43 @@ label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
     color: CornflowerBlue;
 }
 
+.alert-box {
+	padding: 5px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;  
+    width: 50px;
+    opacity: 0.95;
+    position: absolute;
+}
 
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    display: none;
+}
+
+.bpinputs{
+    font-stretch: condensed;
+    font-size: 0.8em;
+}
+
+.agree, .disagree{
+    float: left;
+    margin-left: 50px;
+    font-weight: bolder;
+    color: MidnightBlue;
+    border-radius: 4px;
+    background-color: AliceBlue;
+    padding: 2px;
+}
+
+.agree{
+    float: right;
+    
+}
+
+.bptable{
+    border: 0px;
+}

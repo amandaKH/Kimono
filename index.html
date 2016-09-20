@@ -16,7 +16,7 @@
      </script>
      <script src="https://use.fontawesome.com/d484aa907d.js"></script>
      <link rel="stylesheet" href="kh.css">
-     <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
      <script src="https://d3js.org/d3.v2.min.js"></script>
      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
      <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -35,6 +35,22 @@
   var errorMessage = error.message;
   // ...
   });
+  
+  // function bptable() {
+  //   var path = 'bp-table/';
+  //   var bulletData = [{'major_factor':'Growth' , 'minor_factor' : 'Market Size and Growth','weight' : '1','text':'Company has a meaningful share of the market with room to grow further'},{'major_factor':'Growth' , 'minor_factor' : 'Market Size and Growth','weight' : '1','text':'Company is well established and has a long history'},{'major_factor':'Growth' , 'minor_factor' : 'Market Size and Growth','weight' : '1','text':'Company has experienced consistent growth'},{'major_factor':'Growth' , 'minor_factor' : 'Industry Trends','weight' : '1','text':'Company is well poised to benefit from industry consolidation'},{'major_factor':'Growth' , 'minor_factor' : 'Industry Trends','weight' : '1','text':'Industry trends are working in companys favor'},{'major_factor':'Growth' , 'minor_factor' : 'Drivers of Growth','weight' : '1','text':'Company is able to grow faster than GDP'},{'major_factor':'Growth' , 'minor_factor' : 'Drivers of Growth','weight' : '1','text':'Company has no significant risks associated with growing domestically'},{'major_factor':'Growth' , 'minor_factor' : 'Drivers of Growth','weight' : '1','text':'Company has no significant risks associated with growing internationally'},{'major_factor':'Growth' , 'minor_factor' : 'Drivers of Growth','weight' : '1','text':'Company is large enough to be defensive but small enough to provide room for growth'},{'major_factor':'Growth' , 'minor_factor' : 'Drivers of Growth','weight' : '1','text':'Company has many meaningful partnership opportunities'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company does not have material exposure to foreign exchange'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company has significant pricing power'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company model is effective in larger / smaller cities or customer segments where the company plans to expand next'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company not reliant on acquisitions for growth'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company not reliant on R&D to develop “significant” new products in order to grow (e.g., iPhone)'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company has significant opportunity to gain market share'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company has significant opportunity to make acquisitions'},{'major_factor':'Growth' , 'minor_factor' : 'Company Organic Growth','weight' : '1','text':'Company has significant opportunity to increase customer share of wallet'},{'major_factor':'Growth' , 'minor_factor' : 'KimonoHub Metrics Score','weight' : '1','text':'Company financial metrics show a history of consistent growth'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry has a healthy number of competitors'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Competitors are rational'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry protected from risk of foreign competition'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry has a healthy grwoth rate'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry value add is high relative to fixed or storage costs'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry does not have periods of intermittent overcapacity'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry competitiors have material product differences'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry competitiors have material brand differentiation'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry competitiors are quite diverse'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry barriers to exit are low'},{'major_factor':'Industry' , 'minor_factor' : 'Competitive Rivalry','weight' : '1','text':'Industry has a high degree of informational complexity'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry has high barriers to entry'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'New entrants are unlikely to remove market share and/or prices'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry enjoys economies of scale (more volume = more efficiency)'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry products have proprietary differences (i.e. not commoditized)'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry players have established brand identity (i.e. not a commoditized product)'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry switching costs are high'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry capital requirements are high'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry: access to distribution is important (i.e. it takes time for new entrants to develop a sales channel)'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry has a proprietary learning curve (i.e. you build IP that is not easy to copy)'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry: government policy makes it hard for new entrants'},{'major_factor':'Industry' , 'minor_factor' : 'Barriers to Entry','weight' : '1','text':'Industry: companies aggressively push out new entrants'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customers have low bargaining power (fragmented)'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customers are profitable and price insensitive'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Industry has high costs of switching'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Industry has low churn'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customers are very fragmented'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Product represents small percentage of customers spending'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customer switching costs are high relative to companys switching costs'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Industrys products are differentiated'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customers are unlikely to backward integrate (take over companys line of business)'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customers have fragmented and incomplete information which give the industry more power'},{'major_factor':'Industry' , 'minor_factor' : 'Bargaining Power of Customers','weight' : '1','text':'Customers have little substitutes'}];  
+  //   //Get a key for a new Bullet.
+  //   var newBulletKey = firebase.database().ref().child(path).push().key;
+  
+  //   // Write the new bullet's data simultaneously in the database
+  //   var updates = {};
+  //   updates[path + '/'] = bulletData;
+  
+  //   firebase.database().ref().update(updates).then(function() {
+  //     console.log("Saved bp!");
+  //   });
+  // }
+  
   
   function writeNewBullet(bulletData, docID) {
     var path = 'docs/' + docID +'/' + bulletData.type;
@@ -56,7 +72,7 @@
   // ONE button to be checked.
   
   
-  function buttonClick(type, inputs) {
+  function buttonClick(type, inputs, success) {
     var dbData = {
       type: type
     };
@@ -81,16 +97,14 @@
            }
          }
        }
-       
-    })
+    });
     
     
     
     var documentID = 101; // TODO: Replace with real document ID.
     writeNewBullet(dbData, documentID)
+    $('<div class="alert-box alert-success" role="alert">success!</div>').insertBefore('#'+success).fadeIn( 300 ).delay( 300 ).fadeOut( 400 );
     
-    // TODO: Show entry on html
-    // TODO: Reset document to account for new bullet entry.
   }
   
   function addNew (val, position, format) {
@@ -139,23 +153,31 @@ function addNew5 (val1, val2, position) {
     $(parent).append('<li>'+newentry1+'</span><div class = "author-foot"><span class = "author">'+newentry2+'</span><span class ="date">'+d+'</span><span class="stars">1<i class="fa fa-star" aria-hidden="true"></i></span></div></li>');
   }  
   
+function addNew6 (val1, position) {
+    var newentry1 = document.getElementsByName(val1)[0].value;
+    
+    var parent = document.getElementById(position);
+    $(parent).append('<div class="tag">'+newentry1+'</div>');
+  }  
+  
+  
  
-	function renderChart() {	
+	function renderChart(a,b,c,d,e,f,g) {	
         var cdata = [
 	    {"Name": "GROWTH",
-	    "Average Rating": 6},
+	    "Average Rating": a},
 	    {"Name": "INDUSTRY",
-	    "Average Rating": 7},
+	    "Average Rating": b},
 	    {"Name": "MANAGEMENT",
-	    "Average Rating": 3},
+	    "Average Rating": c},
 	    {"Name": "OPERATIONS",
-	    "Average Rating": 7},
+	    "Average Rating": d},
 	    {"Name": "FINANCIAL",
-	    "Average Rating": 9},
+	    "Average Rating": e},
 	    {"Name": "MOAT",
-	    "Average Rating": 8},
+	    "Average Rating": f},
 	    {"Name": "OTHER",
-	    "Average Rating": 7},
+	    "Average Rating": g},
 	];
 	var valueLabelWidth = 1; // space reserved for value labels (right)
 	var barHeight = 25; // height of one bar
@@ -500,7 +522,7 @@ function addNew5 (val1, val2, position) {
       }
 
       $( document ).ready(function() {
-        renderChart();
+        renderChart(6,7,4,7,8,10,5);
         rendermChart();
         renderdChart("CEO", 67, "67%", "LightSlateGrey", "Gainsboro");
         renderdChart("NPS", 58, "58%", "LightSlateGrey", "Gainsboro");
@@ -508,6 +530,7 @@ function addNew5 (val1, val2, position) {
         renderdChart("IND", 80, "A", "MidnightBlue", "Gainsboro");
         renderdChart("CO", 90, "A+", "LightSlateGrey", "Gainsboro");
         renderdChart("VAL", 95, "A+", "CornflowerBlue", "Gainsboro");
+        // bptable();
         
         $('.sentiment').prop('checked', false);
 
@@ -587,7 +610,7 @@ function addNew5 (val1, val2, position) {
           <div class="logo-wrap">
             <img id="logo" src="http://fullhdpictures.com/wp-content/uploads/2016/06/Luxottica-Logo.jpg" alt="Luxxotica">
             <h2>Luxxotica NYSE:LUX</h2>
-            <div class="tag-wrap">
+            <div id="tag-div" class="tag-wrap">
                 <div class="tag">STRONG MOAT</div>
                 <div class="tag">DEEP VALUE</div>
                 <div class="tag">MARKET LEADER</div>
@@ -598,6 +621,7 @@ function addNew5 (val1, val2, position) {
                     <!-- Modal content-->
                     <div>
                       <input type="text" class="add-tag" placeholder="tag" name="tag">
+                      <button type="button" class="submitdata" onclick="addNew6('tag','tag-div') ; buttonClick('tag', {'bullet': 'tag'}, 'tagModal') ; $('#tagModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                     </div>
                 
                   </div>
@@ -633,12 +657,24 @@ function addNew5 (val1, val2, position) {
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <h4 class="modal-title">Business Profile</h4>
                       </div>
                       <div class="modal-body">
-                        <input type="text" placeholder="comp name" name="compname">
-                        <input type="text" placeholder="ticker" name="compticker">
-                        <button type="button" class="submitdata"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <div>
+                        <div><span class="agree">agree</span><span class="disagree">disagree</span></div>
+                        <div class="bpinputs">
+                          <table class="bptable">
+                            <tr><td>GROWTH</td><td><input type="range" name="bpgrowth" min="0" max="10"></td></tr>
+                            <tr><td>INDUSTRY</td><td><input type="range" name="bpind" min="0" max="10"></td></tr>
+                            <tr><td>MANAGEMENT</td><td><input type="range" name="bpmgmt" min="0" max="10"></td></tr>
+                            <tr><td>OPERATIONS</td><td><input type="range" name="bpops" min="0" max="10"></td></tr>
+                            <tr><td>FINANCIAL</td><td><input type="range" name="bpfin" min="0" max="10"></td></tr>
+                            <tr><td>MOAT</td><td><input type="range" name="bpmoat" min="0" max="10"></td></tr>
+                            <tr><td>OTHER</td><td><input type="range" name="bpother" min="0" max="10"></td></tr>
+                          </table>
+                          <button type="button" class="submitdata" onclick="$('#chart').empty(); renderChart($('input[name=bpgrowth]').val(), $('input[name=bpind]').val(), $('input[name=bpmgmt]').val(), $('input[name=bpops]').val(), $('input[name=bpfin]').val(), $('input[name=bpmoat]').val(), $('input[name=bpother]').val()); buttonClick('business-overview', {'bpgrowth': 'bpgrowth', 'bpind':'bpind', 'bpmgmt':'bpmgmt','bpops':'bpops', 'bpfin':'bpfin','bpmoat':'bpmoat', 'bpother':'bpother'}, 'bpModal'); $('#bpModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        </div>
+                        </div>
                       </div>
                       
                     </div>
@@ -663,7 +699,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="boverview">
-                        <button type="button" class="submitdata" onclick="addNew('boverview','bo-ul','li') ; buttonClick('business-overview', {'bullet': 'boverview'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('boverview','bo-ul','li') ; buttonClick('business-overview', {'bullet': 'boverview'}, 'boModal'); $('#boModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -694,7 +730,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="growth driver" name="gdriver">
-                        <button type="button" class="submitdata" onclick=" addNew('gdriver','gd-ul','li') ; buttonClick('growth-drivers', {'bullet':'gdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick=" addNew('gdriver','gd-ul','li') ; buttonClick('growth-drivers', {'bullet':'gdriver'}, 'gdModal') ; $('#gdModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -724,7 +760,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="profitability driver" name="pdriver">
-                        <button type="button" class="submitdata" onclick="addNew('pdriver','pd-ul','li') ; buttonClick('profitability', {'bullet':'pdriver'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('pdriver','pd-ul','li') ; buttonClick('profitability', {'bullet':'pdriver'}, 'proModal'); $('#proModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -754,7 +790,7 @@ function addNew5 (val1, val2, position) {
                       <div class="modal-body">
                         <input type="text" placeholder="shareholder name" name="shareholder">
                         <input type="number" placeholder="ownership %" name="ownershippct">%
-                        <button type="button" class="submitdata" onclick="addNew2('shareholder', 'ownershippct','sh-ul','li','%') ; buttonClick('ownership', {'shareholder': 'shareholder', 'ownershippct': 'ownershippct'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew2('shareholder', 'ownershippct','sh-ul','li','%') ; buttonClick('ownership', {'shareholder': 'shareholder', 'ownershippct': 'ownershippct'}, 'ownModal'); $('#ownModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -783,7 +819,7 @@ function addNew5 (val1, val2, position) {
                       <div class="modal-body">
                         <input type="text" placeholder="comp name" name="comp-name">
                         <input type="text" placeholder="ticker" name="comp-ticker">
-                        <button type="button" class="submitdata" onclick="addNew2('comp-name', 'comp-ticker','comp-ul','li','') ; buttonClick('comps', {'compname': 'comp-name', 'compticker': 'comp-ticker'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew2('comp-name', 'comp-ticker','comp-ul','li','') ; buttonClick('comps', {'compname': 'comp-name', 'compticker': 'comp-ticker'}, 'cModal'); $('#cModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -810,7 +846,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="summary">
-                        <button type="button" class="submitdata" onclick="addNew('summary','summ-ul','li') ; buttonClick('summary', {'bullet':'summary'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('summary','summ-ul','li') ; buttonClick('summary', {'bullet':'summary'}, 'sModal'); $('#sModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -840,7 +876,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="" name="desc">
-                        <button type="button" class="submitdata" onclick="addNew('desc','desc-div','p') ; buttonClick('description', {'bullet':'desc'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('desc','desc-div','p') ; buttonClick('description', {'bullet':'desc'}, 'desModal'); $('#desModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -878,7 +914,7 @@ function addNew5 (val1, val2, position) {
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata" onclick="addNew3('indtitle', 'indexplanation', 'indsentiment', 'ind-ul', 'li') ; buttonClick('industry-ideas', {'title': 'indtitle', 'bullet': 'indexplanation', 'sentiment': 'indsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew3('indtitle', 'indexplanation', 'indsentiment', 'ind-ul', 'li') ; buttonClick('industry-ideas', {'title': 'indtitle', 'bullet': 'indexplanation', 'sentiment': 'indsentiment' }, 'indModal'); $('#indModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -936,7 +972,7 @@ function addNew5 (val1, val2, position) {
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata" onclick="addNew3('cotitle', 'coexplanation', 'cosentiment', 'co-ul', 'li') ; buttonClick('company-ideas', {'title': 'cotitle', 'bullet': 'coexplanation', 'sentiment': 'cosentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew3('cotitle', 'coexplanation', 'cosentiment', 'co-ul', 'li') ; buttonClick('company-ideas', {'title': 'cotitle', 'bullet': 'coexplanation', 'sentiment': 'cosentiment' }, 'coModal') ; $('#coModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -991,7 +1027,7 @@ function addNew5 (val1, val2, position) {
                           <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </label>
                         
-                        <button type="button" class="submitdata" onclick="addNew3('valtitle', 'valexplanation', 'valsentiment', 'val-ul', 'li') ; buttonClick('value-ideas', {'title': 'valtitle', 'bullet': 'valexplanation', 'sentiment': 'valsentiment' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew3('valtitle', 'valexplanation', 'valsentiment', 'val-ul', 'li') ; buttonClick('value-ideas', {'title': 'valtitle', 'bullet': 'valexplanation', 'sentiment': 'valsentiment' }, 'valModal'); $('#valModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1039,7 +1075,7 @@ function addNew5 (val1, val2, position) {
                           <option value="%">%</option>
                           <option value="x">x</option>
                         </select>
-                        <button type="button" class="submitdata" onclick="addNew4('metricname', 'metricvalue', 'metricunit','metriclist') ; buttonClick('key-metrics', {'metric': 'metricname', 'metric-value': 'metricvalue', 'unit': 'metricunit' })"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew4('metricname', 'metricvalue', 'metricunit','metriclist') ; buttonClick('key-metrics', {'metric': 'metricname', 'metric-value': 'metricvalue', 'unit': 'metricunit' }, 'kmModal'); $('#kmModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                     </div>
                 
@@ -1071,7 +1107,7 @@ function addNew5 (val1, val2, position) {
                       <div class="modal-body">
                         <input type="text" placeholder="Case name" name="casename">
                         <input type="text" placeholder="Notes" name="notes">
-                        <button type="button" class="submitdata" onclick="buttonClick('case-values', {'name': 'casename', 'notes': 'notes', 'current-price': 'current-price', 'intrinsic-price': 'intrinsic-price', 'percent-undervalued':'percent-undervalued', 'rev-amt-five':'rev-amt-five', 'gross-amt-five': 'gross-amt-five', 'gross-pct-five': 'gross-pct-five', 'opex-amt-five': 'opex-amt-five', 'fcf-amt-five':'fcf-amt-five', 'fcf-pct-five' : 'fcf-pct-five', 'terminal-fcf': 'terminal-fcf', 'discount-rate' : 'discount-rate', 'shares-outstanding':'shares-outstanding', 'debt' : 'debt'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="buttonClick('case-values', {'name': 'casename', 'notes': 'notes', 'current-price': 'current-price', 'intrinsic-price': 'intrinsic-price', 'percent-undervalued':'percent-undervalued', 'rev-amt-five':'rev-amt-five', 'gross-amt-five': 'gross-amt-five', 'gross-pct-five': 'gross-pct-five', 'opex-amt-five': 'opex-amt-five', 'fcf-amt-five':'fcf-amt-five', 'fcf-pct-five' : 'fcf-pct-five', 'terminal-fcf': 'terminal-fcf', 'discount-rate' : 'discount-rate', 'shares-outstanding':'shares-outstanding', 'debt' : 'debt'}, 'dModal'); $('#dModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1152,7 +1188,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="review" name="review">
-                        <button type="button" class="submitdata" onclick="addNew('review','mgmt-ul','li') ; buttonClick('management', {'bullet': 'review'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('review','mgmt-ul','li') ; buttonClick('management', {'bullet': 'review'}, 'mModal') ; $('#mModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1185,7 +1221,7 @@ function addNew5 (val1, val2, position) {
                       <div class="modal-body">
                         <input type="text" placeholder="quote" name="view">
                         <input type="text" placeholder="author" name="author">
-                        <button type="button" class="submitdata" onclick="addNew5('view', 'author', 'nv-ul'); buttonClick('views', {'bullet': 'view', 'author': 'author'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew5('view', 'author', 'nv-ul'); buttonClick('views', {'bullet': 'view', 'author': 'author'}, 'vModal') ; $('#vModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
@@ -1222,7 +1258,7 @@ function addNew5 (val1, val2, position) {
                       </div>
                       <div class="modal-body">
                         <input type="text" placeholder="to do" name="todo">
-                        <button type="button" class="submitdata" onclick="addNew('todo','todo-ul','li') ; buttonClick('to-dos', {'bullet': 'todo'})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button type="button" class="submitdata" onclick="addNew('todo','todo-ul','li') ; buttonClick('to-dos', {'bullet': 'todo'}, 'todoModal') ; $('#todoModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
