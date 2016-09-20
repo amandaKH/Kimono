@@ -111,7 +111,7 @@ h2{
 .descriptiontext{
     font-style: italic;
     overflow: auto;
-    height: 100px;
+    height: 80px;
 
 }
 
@@ -123,9 +123,14 @@ h2{
     padding: 3px 0;
 }
 
-.sections, #notableviews, #todos{
+.sections{
     overflow: auto;
-    height: 250px;
+    height: 210px;
+}
+
+#notableviews, #todos{
+    overflow: auto;
+    height: 180px;
 }
 
 .number{
