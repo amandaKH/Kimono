@@ -393,7 +393,7 @@ function addNew6 (val1, position) {
         "debt" : 1000,
         "shares-outstanding" : 479.5,
         "terminal-fcf" : 0.03,
-        "discount-rate" : 0.12,
+        "discount-rate" : 0.10,
         "five-revenue-pct" : 0.03,
         "five-opex-margin-pct" : 0.03,
         "five-gross-margin-pct" : -0.000
@@ -447,6 +447,18 @@ function addNew6 (val1, position) {
         $( ".intrinsic-price" ).text(fmtPdeci(derived["intrinsic-price"]))
         $( ".percent-undervalued" ).text(fmtPct(derived["percent-undervalued"]))
         $(".under").text(fmtPct(derived["percent-undervalued"])+" undervalued")
+        $(".over").text(fmtPct(derived["percent-undervalued"])+" overvalued")
+        
+        $(".wrap-positive").hide();
+        $(".wrap-negative").hide();
+        
+        if (derived["percent-undervalued"]>0) {
+         $(".wrap-positive").show(); 
+        }
+        else {
+          $(".wrap-negative").show(); 
+        }
+        
       }
 
       function recalc() {
@@ -610,8 +622,30 @@ function addNew6 (val1, position) {
     <div id="container">
       <div id="header">
           <div class="logo-wrap">
+              <div class="wrap-positive">
+              <img class="reco-arrow" src="images/buyarrow.png"></img>
+              <div class = "recomm-wrapper">
+                <div class = "recomm-buy">BUY</div>
+                <div class="under">x</div>
+              </div>
+            </div>
+            
+            <div class="wrap-negative">
+              <img class="reco-arrow" src="images/sellarrow.png"></img>
+              <div class = "recomm-wrapper">
+                <div class = "recomm-sell">SELL</div>
+                <div class="over">x</div>
+              </div>
+            </div>
+            <div id="logoh2">
             <img id="logo" src="http://fullhdpictures.com/wp-content/uploads/2016/06/Luxottica-Logo.jpg" alt="Luxxotica">
             <h2>Luxxotica NYSE:LUX</h2>
+            </div>
+            <div class="rate-wrap">
+              <div class="rate"><span class="indu">INDUSTRY rating</span><div id = "IND"></div></div>
+              <div class="rate"><span class="comp">COMPANY rating</span><div id = "CO"></div></div>
+              <div class="rate"><span class="valu">VALUATION rating</span><div id = "VAL"></div></div>
+            </div>
             <div id="tag-div" class="tag-wrap">
                 <div class="tag">STRONG MOAT</div>
                 <div class="tag">DEEP VALUE</div>
@@ -630,20 +664,6 @@ function addNew6 (val1, position) {
                 </div>
               </div>
                 <a data-toggle="modal" href="#tagModal"><div class="add-tag">+</div></a>
-            </div>
-          </div>
-          <div class="summary-bar">
-            <div class="wrap">
-              <img class="reco-arrow" src="images/buyarrow.png"></img>
-              <div class = "recomm-wrapper">
-                <div class = "recomm">BUY</div>
-                <div class="under">15% undervalued</div>
-              </div>
-            </div>
-            <div class="rate-wrap">
-              <div class="rate"><span class="indu">INDUSTRY rating</span><div id = "IND"></div></div>
-              <div class="rate"><span class="comp">COMPANY rating</span><div id = "CO"></div></div>
-              <div class="rate"><span class="valu">VALUATION rating</span><div id = "VAL"></div></div>
             </div>
           </div>
       </div>
