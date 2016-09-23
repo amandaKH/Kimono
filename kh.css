@@ -498,7 +498,7 @@ label > input:checked + i{ /* (RADIO CHECKED) IMAGE STYLES */
     
 .tag-wrap{
     float: right;
-    width: 30%;
+    width: 25%;
     margin-top: 5px;
 }
 

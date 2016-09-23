@@ -161,6 +161,14 @@ function addNew6 (val1, position) {
   }  
   
   
+function addNew7 (val1, val2, position) {
+    var newentry1 = document.getElementsByName(val1)[0].value;
+    var newentry2 = document.getElementsByName(val2)[0].value;
+    
+    var parent = document.getElementById(position);
+    $(parent).append('<li><a href="https://'+newentry2+'" target="_blank">'+newentry1+'</a></li>');
+  }    
+
  
 	function renderChart(a,b,c,d,e,f,g) {	
         var cdata = [
@@ -1282,8 +1290,9 @@ function addNew6 (val1, position) {
                         <h4 class="modal-title">Add a link</h4>
                       </div>
                       <div class="modal-body">
-                        <input type="text" placeholder="link" name="link">
-                        <button type="button" class="submitdata" onclick="addNew('link','link-ul','li') ; buttonClick('links', {'bullet': 'link'}, 'linkModal') ; $('#linkModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <input type="text" placeholder="linkURL starting with www." name="linkURL">
+                        <input type="text" placeholder="link title" name="link-title">
+                        <button type="button" class="submitdata" onclick="addNew7('link-title','linkURL', 'link-ul') ; buttonClick('links', {'bullet': 'linkURL', 'link-title':'link-title'}, 'linkModal') ;  $('#linkModal').modal('hide')"><i class="fa fa-check" aria-hidden="true"></i></button>
                       </div>
                       
                     </div>
